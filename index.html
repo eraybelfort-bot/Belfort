@@ -24,6 +24,7 @@
     --accent-dim: rgba(34,197,94,0.08);
     --accent-mid: rgba(34,197,94,0.18);
     --accent-glow: rgba(34,197,94,0.25);
+    --danger: #ef4444;
     --serif: 'Cormorant Garamond', Georgia, serif;
     --sans: 'DM Sans', system-ui, sans-serif;
   }
@@ -41,6 +42,8 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  body.modal-open { overflow: hidden; }
+
   #bgChart {
     position: fixed;
     top: 0;
@@ -52,7 +55,7 @@
     pointer-events: none;
   }
 
-  body > * {
+  body > *:not(#bgChart):not(.chart-modal):not(.service-modal) {
     position: relative;
     z-index: 1;
   }
@@ -94,14 +97,24 @@
     justify-content: flex-start;
     overflow: hidden;
     text-decoration: none;
+    color: var(--text);
   }
 
   .nav-logo-img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    object-position: left center;
+    object-fit: cover;
+    object-position: center;
     display: block;
+  }
+
+  .nav-logo.logo-missing::after {
+    content: 'BELFORT';
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    color: var(--text);
   }
 
   .nav-links {
@@ -348,7 +361,7 @@
     margin: 0 auto;
   }
 
-  #hizmet { background: rgba(5,5,5,0.86); }
+  #hizmet { background: var(--bg); }
 
   .services-grid {
     display: grid;
@@ -419,35 +432,244 @@
     opacity: 0;
     transform: translateX(-8px);
     transition: opacity 0.3s, transform 0.3s;
-    cursor: pointer;
   }
 
-  .service-card:hover .arrow {
+  .service-card:hover .arrow,
+  .service-card:focus-within .arrow {
     opacity: 1;
     transform: translateX(0);
   }
 
-  #crypto { background: rgba(10,10,10,0.88); }
+  .service-detail-trigger {
+    border: none;
+    background: transparent;
+    font-family: var(--sans);
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .service-modal,
+  .chart-modal {
+    position: fixed !important;
+    inset: 0 !important;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    z-index: 9999 !important;
+    overflow-y: auto;
+  }
+
+  .service-modal.open,
+  .chart-modal.open { display: flex; }
+
+  .service-backdrop,
+  .chart-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.78);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .service-dialog,
+  .chart-dialog {
+    position: relative;
+    max-height: calc(100vh - 48px);
+    overflow: auto;
+    background: rgba(12,12,12,0.98);
+    border: 1px solid rgba(255,255,255,0.11);
+    border-radius: 18px;
+    box-shadow: 0 30px 120px rgba(0,0,0,0.7);
+    animation: chartPop 0.22s ease both;
+  }
+
+  .service-dialog {
+    width: min(820px, 100%);
+    padding: 34px;
+  }
+
+  .chart-dialog {
+    width: min(980px, 100%);
+    padding: 28px;
+  }
+
+  .service-close,
+  .chart-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  .service-dialog h3 {
+    font-family: var(--serif);
+    font-size: clamp(32px, 4vw, 46px);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 18px;
+    padding-right: 42px;
+  }
+
+  .service-lead {
+    font-size: 16px;
+    color: var(--muted2);
+    line-height: 1.8;
+    margin-bottom: 26px;
+  }
+
+  .service-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 28px 0;
+  }
+
+  .service-detail-item {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    background: rgba(255,255,255,0.018);
+  }
+
+  .service-detail-item span {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .service-detail-item strong {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .service-body p {
+    font-size: 14px;
+    color: var(--muted2);
+    line-height: 1.85;
+    margin-bottom: 16px;
+  }
+
+  #surec { background: var(--bg); }
+
+  .process-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .process-item {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 32px;
+    padding: 36px 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    transition: all 0.3s;
+  }
+
+  .process-item:last-child { border-bottom: none; }
+
+  .process-num {
+    font-family: var(--serif);
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--muted);
+    padding-top: 4px;
+  }
+
+  .process-content h3 {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  .process-content p {
+    font-size: 14px;
+    color: var(--muted2);
+    line-height: 1.7;
+  }
+
+  .quote-section {
+    background: var(--bg2);
+    padding: 100px 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .quote-inner {
+    max-width: 780px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .quote-mark {
+    font-family: var(--serif);
+    font-size: 96px;
+    line-height: 0.5;
+    color: var(--accent);
+    opacity: 0.4;
+    display: block;
+    margin-bottom: 32px;
+  }
+
+  .quote-text {
+    font-family: var(--serif);
+    font-size: clamp(22px, 3vw, 32px);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text);
+    line-height: 1.5;
+    margin-bottom: 36px;
+  }
+
+  .quote-author {
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  #kripto { background: var(--bg); }
 
   .crypto-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-    gap: 18px;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 16px;
+    max-width: 980px;
+    margin: 0 auto;
   }
 
   .crypto-card {
-    background: rgba(20,20,20,0.94);
+    background: linear-gradient(135deg, var(--surface), rgba(34,197,94,0.025));
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 16px;
     padding: 22px;
     cursor: pointer;
-    transition: transform 0.25s, border-color 0.25s, background 0.25s;
+    transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
   }
 
   .crypto-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(34,197,94,0.35);
-    background: rgba(26,26,26,0.96);
+    border-color: rgba(34,197,94,0.28);
+    box-shadow: 0 18px 50px rgba(0,0,0,0.25);
   }
 
   .crypto-top {
@@ -457,38 +679,179 @@
     margin-bottom: 18px;
   }
 
-  .crypto-name {
+  .crypto-symbol {
     font-size: 13px;
-    color: var(--muted2);
-    letter-spacing: 1px;
-    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    color: var(--text);
   }
 
-  .crypto-symbol {
-    font-size: 11px;
+  .crypto-live {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
     color: var(--accent);
-    border: 1px solid rgba(34,197,94,0.25);
+    border: 1px solid rgba(34,197,94,0.3);
     border-radius: 100px;
-    padding: 4px 10px;
+    padding: 4px 9px;
   }
 
   .crypto-price {
     font-family: var(--serif);
-    font-size: 31px;
+    font-size: 32px;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  .crypto-change {
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .crypto-change.up { color: var(--accent); }
+  .crypto-change.down { color: var(--danger); }
+
+  .crypto-meta {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 14px;
+  }
+
+  .crypto-loading {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--muted2);
+    font-size: 14px;
+    padding: 36px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface);
+  }
+
+  @keyframes chartPop {
+    from { opacity: 0; transform: translateY(16px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .chart-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 18px;
+    padding-right: 42px;
+  }
+
+  .chart-head h3 {
+    font-family: var(--serif);
+    font-size: 36px;
+    font-weight: 300;
     line-height: 1;
     color: var(--text);
   }
 
-  .crypto-change {
-    margin-top: 10px;
-    font-size: 13px;
-    color: var(--muted2);
+  .chart-price-wrap { text-align: right; }
+
+  .chart-price {
+    font-family: var(--serif);
+    font-size: 32px;
+    line-height: 1;
+    color: var(--accent);
   }
 
-  .crypto-change.up { color: var(--accent); }
-  .crypto-change.down { color: #ef4444; }
+  .chart-change {
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 500;
+  }
 
-  #fiyat { background: rgba(10,10,10,0.88); }
+  .chart-change.up { color: var(--accent); }
+  .chart-change.down { color: var(--danger); }
+
+  .chart-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .chart-tabs {
+    display: inline-flex;
+    gap: 6px;
+    padding: 5px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.025);
+  }
+
+  .chart-tab {
+    border: none;
+    border-radius: 7px;
+    padding: 8px 12px;
+    background: transparent;
+    color: var(--muted2);
+    font-family: var(--sans);
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .chart-tab.active {
+    background: var(--accent);
+    color: #000;
+  }
+
+  .chart-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(110px, 1fr));
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .chart-stat {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 11px 12px;
+    background: rgba(255,255,255,0.018);
+  }
+
+  .chart-stat span {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .chart-stat strong {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  #coinChart {
+    width: 100%;
+    height: 420px;
+    display: block;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background:
+      linear-gradient(180deg, rgba(34,197,94,0.025), rgba(255,255,255,0.01)),
+      rgba(255,255,255,0.012);
+  }
+
+  .chart-note {
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  #fiyat { background: var(--bg2); }
 
   .pricing-grid {
     display: grid;
@@ -627,131 +990,97 @@
 
   .payment-methods {
     max-width: 900px;
-    margin: 34px auto 0;
-    background: rgba(20,20,20,0.9);
+    margin: 40px auto 0;
+    padding: 32px;
     border: 1px solid var(--border);
     border-radius: 16px;
-    padding: 28px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.025), rgba(34,197,94,0.035));
   }
 
-  .payment-methods h3 {
+  .payment-head {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .payment-head h3 {
     font-family: var(--serif);
-    font-size: 26px;
+    font-size: clamp(28px, 3vw, 40px);
     font-weight: 300;
-    margin-bottom: 18px;
-  }
-
-  .payment-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-    gap: 14px;
-  }
-
-  .payment-item {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 18px;
-    background: rgba(255,255,255,0.02);
-  }
-
-  .payment-item strong {
-    display: block;
-    font-size: 14px;
-    color: var(--text);
-    margin-bottom: 5px;
-  }
-
-  .payment-item span {
-    font-size: 13px;
-    color: var(--muted2);
-  }
-
-  #surec { background: rgba(5,5,5,0.86); }
-
-  .process-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    max-width: 720px;
-    margin: 0 auto;
-  }
-
-  .process-item {
-    display: grid;
-    grid-template-columns: 60px 1fr;
-    gap: 32px;
-    padding: 36px 0;
-    border-bottom: 1px solid var(--border);
-    position: relative;
-    transition: all 0.3s;
-  }
-
-  .process-item:last-child { border-bottom: none; }
-
-  .process-num {
-    font-family: var(--serif);
-    font-size: 13px;
-    font-weight: 400;
-    color: var(--muted);
-    padding-top: 4px;
-  }
-
-  .process-content h3 {
-    font-family: var(--serif);
-    font-size: 22px;
-    font-weight: 400;
     color: var(--text);
     margin-bottom: 10px;
   }
 
-  .process-content p {
+  .payment-head p {
     font-size: 14px;
     color: var(--muted2);
+    max-width: 520px;
+    margin: 0 auto;
     line-height: 1.7;
   }
 
-  .quote-section {
-    background: rgba(10,10,10,0.88);
-    padding: 100px 40px;
-    position: relative;
-    z-index: 1;
+  .payment-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 26px;
   }
 
-  .quote-inner {
-    max-width: 780px;
-    margin: 0 auto;
-    text-align: center;
+  .payment-card {
+    display: flex;
+    gap: 14px;
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: rgba(255,255,255,0.018);
   }
 
-  .quote-mark {
-    font-family: var(--serif);
-    font-size: 96px;
-    line-height: 0.5;
+  .payment-icon {
+    width: 38px;
+    height: 38px;
+    border: 1px solid rgba(34,197,94,0.3);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--accent);
-    opacity: 0.4;
-    display: block;
-    margin-bottom: 32px;
+    background: var(--accent-dim);
+    flex-shrink: 0;
   }
 
-  .quote-text {
-    font-family: var(--serif);
-    font-size: clamp(22px, 3vw, 32px);
-    font-weight: 300;
-    font-style: italic;
+  .payment-card h4 {
+    font-size: 14px;
+    font-weight: 500;
     color: var(--text);
-    line-height: 1.5;
-    margin-bottom: 36px;
+    margin-bottom: 6px;
   }
 
-  .quote-author {
-    font-size: 13px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
+  .payment-card p {
+    font-size: 12px;
+    color: var(--muted2);
+    line-height: 1.6;
+  }
+
+  .payment-cta {
+    display: block;
+    width: fit-content;
+    margin: 0 auto;
+    font-size: 14px;
+    font-weight: 500;
+    color: #000;
+    background: var(--accent);
+    padding: 13px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .payment-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(34,197,94,0.3);
   }
 
   footer {
-    background: rgba(5,5,5,0.9);
+    background: var(--bg);
     border-top: 1px solid var(--border);
     padding: 80px 40px 40px;
     position: relative;
@@ -769,18 +1098,12 @@
   }
 
   .footer-brand .logo-text {
-    width: 210px;
-    height: 72px;
-    margin-bottom: 12px;
-    overflow: hidden;
-  }
-
-  .footer-brand .logo-text img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: left center;
-    display: block;
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    color: var(--text);
+    margin-bottom: 16px;
   }
 
   .footer-brand p {
@@ -869,160 +1192,6 @@
     fill: #fff;
   }
 
-  .modal {
-    position: fixed;
-    inset: 0;
-    z-index: 500;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    background: rgba(0,0,0,0.76);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
-
-  .modal.active { display: flex; }
-
-  .modal-box {
-    width: min(920px, 100%);
-    max-height: 88vh;
-    overflow: auto;
-    background: rgba(14,14,14,0.98);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 18px;
-    box-shadow: 0 24px 80px rgba(0,0,0,0.55);
-    position: relative;
-  }
-
-  .modal-header {
-    padding: 24px 26px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 18px;
-  }
-
-  .modal-title {
-    font-family: var(--serif);
-    font-size: 32px;
-    font-weight: 300;
-    line-height: 1.1;
-  }
-
-  .modal-subtitle {
-    font-size: 13px;
-    color: var(--muted2);
-    margin-top: 8px;
-  }
-
-  .modal-close {
-    width: 38px;
-    height: 38px;
-    border: 1px solid var(--border);
-    border-radius: 50%;
-    background: transparent;
-    color: var(--text);
-    font-size: 24px;
-    line-height: 1;
-    cursor: pointer;
-    transition: border-color 0.2s, color 0.2s;
-    flex-shrink: 0;
-  }
-
-  .modal-close:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-
-  .modal-body {
-    padding: 26px;
-  }
-
-  .service-modal-text {
-    color: var(--muted2);
-    font-size: 15px;
-    line-height: 1.85;
-  }
-
-  .service-modal-text p + p { margin-top: 16px; }
-
-  .chart-tools {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 18px;
-    flex-wrap: wrap;
-  }
-
-  .timeframes {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .timeframe-btn {
-    border: 1px solid var(--border);
-    background: rgba(255,255,255,0.03);
-    color: var(--muted2);
-    border-radius: 999px;
-    padding: 8px 13px;
-    font: inherit;
-    font-size: 12px;
-    cursor: pointer;
-  }
-
-  .timeframe-btn.active {
-    color: #000;
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-
-  .chart-panel {
-    height: 390px;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    background: #050505;
-    overflow: hidden;
-  }
-
-  #coinChart {
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-
-  .chart-stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 12px;
-    margin-top: 16px;
-  }
-
-  .chart-stat {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px;
-    background: rgba(255,255,255,0.02);
-  }
-
-  .chart-stat span {
-    display: block;
-    font-size: 11px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 1.3px;
-    margin-bottom: 5px;
-  }
-
-  .chart-stat strong {
-    font-size: 15px;
-    color: var(--text);
-    font-weight: 500;
-  }
-
   .reveal {
     opacity: 0;
     transform: translateY(28px);
@@ -1048,6 +1217,69 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
+  @media (hover: none) {
+    .service-card .arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 24px; }
+    .nav-logo { width: 154px; height: 44px; }
+    .nav-links { display: none; }
+
+    section { padding: 80px 24px; }
+
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+
+    .footer-brand { grid-column: 1 / -1; }
+
+    .hero-stats { gap: 32px; }
+    .pricing-grid { grid-template-columns: 1fr; max-width: 400px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .payment-grid { grid-template-columns: 1fr; }
+    .payment-methods { padding: 24px; }
+
+    .chart-modal,
+    .service-modal {
+      align-items: flex-start;
+      padding: 14px;
+    }
+
+    .chart-dialog,
+    .service-dialog {
+      max-height: calc(100vh - 28px);
+      padding: 22px;
+      border-radius: 14px;
+    }
+
+    .chart-head {
+      align-items: flex-start;
+      flex-direction: column;
+      padding-right: 38px;
+    }
+
+    .chart-price-wrap { text-align: left; }
+
+    .chart-stats,
+    .service-detail-grid {
+      grid-template-columns: 1fr;
+    }
+
+    #coinChart {
+      height: 320px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .footer-grid { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+  }
+
   .nav-toggle {
     display: none;
     flex-direction: column;
@@ -1065,39 +1297,67 @@
   }
 
   @media (max-width: 768px) {
-    nav { padding: 0 24px; }
-    .nav-logo { width: 152px; height: 46px; }
-    .nav-links { display: none; }
     .nav-toggle { display: flex; }
-    section { padding: 80px 24px; }
-    .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
-    .footer-brand { grid-column: 1 / -1; }
-    .hero-stats { gap: 32px; }
-    .pricing-grid { grid-template-columns: 1fr; max-width: 400px; }
-    .services-grid { grid-template-columns: 1fr; }
-    .chart-panel { height: 320px; }
-  }
-
-  @media (max-width: 480px) {
-    .footer-grid { grid-template-columns: 1fr; }
-    .footer-bottom { flex-direction: column; text-align: center; }
-    .process-item { grid-template-columns: 42px 1fr; gap: 20px; }
-    .modal { padding: 14px; }
-    .modal-header, .modal-body { padding: 20px; }
   }
 </style>
 </head>
+
 <body>
 <canvas id="bgChart"></canvas>
 
+<div class="chart-modal" id="chartModal" aria-hidden="true">
+  <div class="chart-backdrop" data-close-chart></div>
+  <div class="chart-dialog">
+    <button class="chart-close" type="button" data-close-chart aria-label="Grafiği kapat">×</button>
+    <div class="chart-head">
+      <div>
+        <span class="section-tag">Canlı Grafik</span>
+        <h3 id="chartTitle">BTC/USDT</h3>
+      </div>
+      <div class="chart-price-wrap">
+        <div class="chart-price" id="chartPrice">$--</div>
+        <div class="chart-change" id="chartChange">--</div>
+      </div>
+    </div>
+    <div class="chart-toolbar">
+      <div class="chart-tabs">
+        <button class="chart-tab" type="button" data-interval="15m">15D</button>
+        <button class="chart-tab active" type="button" data-interval="1h">1S</button>
+        <button class="chart-tab" type="button" data-interval="4h">4S</button>
+        <button class="chart-tab" type="button" data-interval="1d">1G</button>
+      </div>
+      <div class="chart-note" id="chartNote">Binance piyasa verisi</div>
+    </div>
+    <div class="chart-stats">
+      <div class="chart-stat"><span>Açılış</span><strong id="statOpen">--</strong></div>
+      <div class="chart-stat"><span>Yüksek</span><strong id="statHigh">--</strong></div>
+      <div class="chart-stat"><span>Düşük</span><strong id="statLow">--</strong></div>
+      <div class="chart-stat"><span>Hacim</span><strong id="statVolume">--</strong></div>
+    </div>
+    <canvas id="coinChart"></canvas>
+  </div>
+</div>
+
+<div class="service-modal" id="serviceModal" aria-hidden="true">
+  <div class="service-backdrop" data-close-service></div>
+  <div class="service-dialog">
+    <button class="service-close" type="button" data-close-service aria-label="Detayı kapat">×</button>
+    <span class="section-tag" id="serviceTag">Hizmet Detayı</span>
+    <h3 id="serviceTitle">Piyasa Analizi</h3>
+    <p class="service-lead" id="serviceLead"></p>
+    <div class="service-detail-grid" id="serviceHighlights"></div>
+    <div class="service-body" id="serviceBody"></div>
+  </div>
+</div>
+
 <nav id="navbar">
   <a href="#" class="nav-logo" aria-label="Belfort ana sayfa">
-    <img class="nav-logo-img" alt="Belfort" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCABiARgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDxhVZmCqpZmOAoGST6Vc/sjVRx/ZWof+Ar/wCFP0A/8VJpJ/6foP8A0Ytfa9AHw9Nb3FrJ5dzbywSYzslQqceuDUkWn39xGJILC7mjPR4oGZT+IFeqfGjw9rmqeP8A7Rp+k393B9iiXzILdnXILZGQOvNem/B6xvNN+HVna31rPbTrNMTFOhRgC5I4NAHy/Lp1/bxGW4sLuGMcF5IGVR+JFV819PfHDP8AwrG7wf8Al4g/9DFfL2cficD3oAdml5xnseAfWvWfAPwWvdZ8rUvEyy2NgfmS0BxNMP8Aa/uD9fpTfjvpllpOp+HbLT7aK2tYbOVUiiXCr8w/zmgDyfNGabmjNADqSikoAXNJmikoAWkopKACSikoAKSikNABmkopDQAU0mlNJQAUhopKAEpaKKAENFFJQAUlKaSgANFJRQBv6B/wAjJpP/AF/Qf+jFr6x8b+OdP8CWFreajbXU8dzN5Ki3VSQcE85I44r5N0H/AJGPSf8Ar9g/9GLXu37RP/IsaL/1/n/0W1AE/wDw0L4Z/wCgVq//AH7j/wDi6X/hoPwyf+YXq/8A37j/APi6+cTgck4r0fwD8JNW8WmO+1DzNO0c8iRl/ezj/YU9B/tH8AaAD4gfFDVfHEM1pZWclpoMDK8ilNzuc/KZGHC89FH5mvRfgx4F0VPDdh4qmhNzqVyGZGl5WDDFfkHrx16/SpPin4e0rw18HbnT9Js47a3W4gJC/ec7xyx6sfc10PweGPhVoeP7kn/o16AO5r56/aIP/FSaEP8Ap0l/9CFem+OvihofgiJoZXF3qhXKWUTDIz0Ln+Afr6Cvnjx1qnifXL+y1jxNA1uLuJmsoSu0JECPur1AJPU8mgDl6KSkJC/eIH1oAWimean99fzo8xP76/nQA+koppdVPLAfU0AOopnmJ/eX86N6f3h+dADqTNIWAHJA+tIGVuhB+hoAWkopCQBkkCgAzSU3zE/vD86PMT+8PzoAWkoDAjIOaQkDknH1oAWkpdrlN4jcp/e2nH500EEcHP0oADSUUm5f7w/OgBaSk3r/AHh+dL2yDQAUlIWGeSKTcPUfnQAtJRuX1FGc0AFFFFAG7oH/ACMmk/8AX9B/6MWvdv2iv+RY0X/r/P8A6LavB9BP/FSaT/1/Qf8Aoxa94/aK/wCRY0X/AK/z/wCi2oA4n4G6Dpmu+Lb5tUs47oWVus0KSDKhy2MkdD+NfTYAAwBxXzt+zt/yNGt/9eSf+h16/wCM/iBofgiz8zUZ/MumXMNnEQZZPfH8K+54+tAGF8cv+SX3nP8Ay8Qf+jBXlvh34geI5vCOk+CPBdjK2pKji4u8AlQzsfl7KADy7fhWtbad40+Nl4l5qjnSPDCNuijUHD/7gP32/wBs8DsO1e0+GvCejeEdNFjo9msMZ5kkPMkp9WbqT/kUAcP4G+Dlhocq6v4hcarrTt5hMhLxRMecjP32/wBpvwAri/2if+Ri0H/r1l/9CFfQ1fN3x91Ww1DxVptvZ3cU8tnbyJcLG27y2LAgH346UAeT17H+z3DFca3ryzRRyAW0JAdQcfM3rXjVe0fs6n/ie69/17Q/+hNQB6D4s+InhHwbrQ0rU9Nna4MSzZt7RGXaSQOSRzwah8O/EDwJ441MaNBp+LiVWKRXtkoWTAyQOozjJ5qXxn8LNB8Ya+NV1HUru3uBAsOyKRAMAkg8gnuaPCHwl8NeFdbTV7O6u7y7hVli86VSse4YJwoHOCRz60AeVfDr4n+CvDvgTTdL1eOVr6ESeYRZ7xzIzD5u/BFet+Fdb8O+MtKfUtItUa2SYwky2wQ7gATx/wIV8WqPlH0r6f/AGeP+SdXP/YSl/8AQI6ALurfFfwDour3emXkEgubSVopQtiCNwODg18/fEfXNN8SeOb7VNIDCxlWIRho9h+VADx9Qaj+I3/JSfEn/X/L/OuYoAKKKKANrQP+Rl0n/r+g/wDRi17z+0X/AMivo3/X+f8A0W1eC6B/yMuk/wDX9B/6MWvef2jP+RX0b/r/AD/6LagDyDwN4m13w7f3sPhuz+06pqUS28JCb2jwckhehP14HU17H4L+DJN5/b3jic6lqkreYbWR/MRT6yN/Gfb7o965X9nUA+KtaJAJFkmDjkfPX0ZQAiqqIqIoVVGAAMACqOsa1p2gabJqGq3kVpax/ekkOBn0Hcn2HNcd49+LGjeC1e0ixqGr44tYm4jPYyN/D9Ov86+fLrxafGHim3vfHF5fSacrcw2AAEQ9EU9B6nljQB33iX4neKPHzXumeCNNvYtOgjZri4iXEzoPf+DPZR8x/SvFwAOlfavhe00O08PWY8OQ28elyRiSEwDhwf4iepPqTz6188fHLwrDoHi+HUrOMR2urI0jIowFmXG/H1yD9SaAPMs17T+zp/yHNf8A+vaH/wBCavFa6vwN49vvAd1e3FhZ21y93GqMJywChSTxj60Aeh/GPwR4n8QeOlvtI0a4u7UWccfmRsoG4FiRyR6isDwR8OPHun+MdMvF02402KC4R5p5JlA8sEbhgMS2RkYx3rQ/4aI8R/8AQF0r/vqT/GmSftD+JWQhNI0lGPRj5jY/DcKAPQvj19l/4Vs/n7fO+1w/Z89d+TnH/Ad1HwEz/wAK1Gf+f2b+Yr588T+MNc8Y3qXOtXnnGLIiiRdkcQPXavqfU5NdJ4N+Ler+CtB/siy02xuIRK8vmTM+7LdRwfagC14n+Gfji98Wazd2mhXD2897NJE4uIwGUuSDgt6Vlf8ACp/HzcHw9c/jcxY/9Drq/wDhonxF/wBAXSv++pP8aT/horxF/wBAXS/++pP8aAMz4Fq0fxSEbrtdLSdWHoQVBr0L41+CfEXi680WTQ7AXS2yTCUmZE2liuPvEZ6GvEvCnjC88I+J5NetLaCed1kUxykhRvOT057V33/DRXiL/oC6X/31J/jQBzX/AApnx/8A9AJf/AuL/wCKrU+E2lXuh/Gu30vUYRDeW8Myyxhw20mPPUcdCK0f+GivEX/QF0v/AL6k/wAa4y1+IeoWnxFn8aJZWpvZg2YCW8sZQJ656CgD1349eI9a8PpoB0jVLmx89pxL5D7d+AmM/TJ/OvGf+FjeNP8AoaNT/wC/1W/HfxH1Hx8tgt/Y2tt9iMhQwFju37c5yf8AZrjKAOj8IeKJfDnjqx8RXDvMVnZrpjy0iPkSH3PJP1FfSvj7wjZ/E3wdbtp15D5y4ubC6HKNkcg4/hYfkQPTFfIxrq/CHxG8R+CcxaXdLJZltzWdwpeInuRyCp+hFAF9vg54+W8+z/2EW5x5ouI/L+ud1e8/DLwFF8O/D91NqFzC2oXIEl3MDiOJVBwoJ7DJJPHX2rzgftIap5WG8OWZlx94XLbfy2/1rhvGHxR8TeM4Ta3txHbWBOTaWqlUb/eJJLfQnHtQBD8SvFEfjHx3ealbk/Y0K29sSPvRqfvfiST+NfVXijXH8NeDb/WY4Fnezt/METNtDdOM18Tensa9Q8QfHHWvEPhy90WfSdPiguovKZ42fco9Rk0AeieBPjknifxLDo+qadDp/wBpG23lSYsGk7IcgYz29+O9Z/7Q2ma6+nWepQXk0mhxsEuLRQAscmflkOOoOcc9Dj1r57VmRldGZXUgqynBBHQg16tJ8edbvNEOlaloumX0MkHkTtLvBmGMEnB4J68d6APKK+nv2eP+SdXP/YSl/wDQI6+YTgk4GBngZ6V6B4I+Leq+BdCfSbHTbK4iedpy85bdlgBjg9PloAxPiN/yUrxJ/wBf8v8AOuZrQ13Vpde16/1eeNIpbyZpnRM7VJOcDNZ9ABRSUUAbWgf8jLpP/X9B/wCjFr3n9oz/AJFbRv8Ar/P/AKLavBfD/wDyMuk/9f0H/oxa95/aNwPC2jZOP9PP/otqAOR+AmoWWk6z4gv9Quora1hsULyyttVfn9asePvjneamZdN8Kl7Oz+698wxNL/uD+Ae/X6VkeAvg1rHikR32qmXTNHbDDcP3047bVPQf7R/AGvb4fhH4EihSP/hHbZ9qgbnZize5OetAHyKWLEszbmY5Zickn1NGRjORX15/wqbwH/0LVp+b/wCNTWnwx8E2VylzB4bsRLGcqWUuAfXDEigDP+Ddhfab8MtNiv0dHkMk0cb8FY2YlfpkHP41xv7RssQ0vw/GSPNa4lZfXaEGf1Ir2yWWK3geWaRI4o1LO7nCqB1JPYV8lfFXxnH408XtPaMTptknkWp6bxnLP+J6ewFAHEUUnaigBaKbmlzQAuaM0lFABRSUUALRSUGgAozSUUAGaKKSgBaSiigAoopKACkzRRQAUUlFABRRRQAUUUUAJRRiloAKKKKAJaKKKACiiigAFBoooAKBRRQAUUUUALSUUUAFHaiigAptFFAC0UUUAJRRRQAd6O9FFACUlFFABSGiigAooooAKKKKADtRRRQAUUUUAFFFFAH//2Q==">
+    <img src="LOGO.jpeg" alt="" class="nav-logo-img" onerror="this.style.display='none'; this.parentElement.classList.add('logo-missing');">
   </a>
   <ul class="nav-links">
     <li><a href="#hizmet">Hizmetler</a></li>
     <li><a href="#surec">Süreç</a></li>
-    <li><a href="#crypto">Kripto</a></li>
+    <li><a href="#kripto">Kripto</a></li>
     <li><a href="#fiyat">Fiyatlandırma</a></li>
     <li><a href="#iletisim" class="nav-cta">İletişime Geç</a></li>
   </ul>
@@ -1145,19 +1405,19 @@
         <div class="service-icon">📊</div>
         <h3>Piyasa Analizi</h3>
         <p>Teknik ve temel analizi birleştirerek kısa ve uzun vadeli fırsatları erken tespit ediyoruz. Günlük, haftalık ve aylık raporlarla her zaman önde kalın.</p>
-        <div class="arrow" onclick="openServiceModal('analysis')">Detaylar →</div>
+        <button class="arrow service-detail-trigger" type="button" data-service="analysis">Detaylar →</button>
       </div>
       <div class="service-card reveal reveal-delay-2">
         <div class="service-icon">⚡</div>
         <h3>Trade Sinyalleri</h3>
         <p>Risk/ödül oranı optimize edilmiş, net giriş-çıkış seviyeli sinyaller. Stop-loss ve hedef noktaları açıkça belirtilmiş, uygulaması kolay öneriler.</p>
-        <div class="arrow" onclick="openServiceModal('signals')">Detaylar →</div>
+        <button class="arrow service-detail-trigger" type="button" data-service="signals">Detaylar →</button>
       </div>
       <div class="service-card reveal reveal-delay-3">
         <div class="service-icon">🎯</div>
         <h3>Birebir Danışmanlık</h3>
         <p>Risk toleransınıza ve hedeflerinize özel strateji geliştiriyoruz. Portföy yönetimi, pozisyon boyutlandırma ve psikolojik destek tek çatı altında.</p>
-        <div class="arrow" onclick="openServiceModal('consulting')">Detaylar →</div>
+        <button class="arrow service-detail-trigger" type="button" data-service="consulting">Detaylar →</button>
       </div>
     </div>
   </div>
@@ -1210,38 +1470,15 @@
   </div>
 </div>
 
-<section id="crypto">
+<section id="kripto">
   <div class="container">
     <div class="section-header reveal">
-      <span class="section-tag">Canlı Kripto Piyasası</span>
-      <h2 class="section-title">Popüler coinlerde<br>anlık görünüm</h2>
-      <p class="section-desc">Fiyat kartlarına tıklayarak detaylı mum grafiğini ekranınızda açabilirsiniz.</p>
+      <span class="section-tag">Canlı Piyasa</span>
+      <h2 class="section-title">Kripto piyasasını<br>anlık takip edin</h2>
+      <p class="section-desc">Başlıca kripto varlıkların USDT paritesindeki canlı fiyat değişimlerini izleyin.</p>
     </div>
-    <div class="crypto-grid">
-      <div class="crypto-card reveal" data-symbol="BTCUSDT" data-name="Bitcoin">
-        <div class="crypto-top"><span class="crypto-name">Bitcoin</span><span class="crypto-symbol">BTC</span></div>
-        <div class="crypto-price">Yükleniyor</div><div class="crypto-change">24s değişim</div>
-      </div>
-      <div class="crypto-card reveal reveal-delay-1" data-symbol="ETHUSDT" data-name="Ethereum">
-        <div class="crypto-top"><span class="crypto-name">Ethereum</span><span class="crypto-symbol">ETH</span></div>
-        <div class="crypto-price">Yükleniyor</div><div class="crypto-change">24s değişim</div>
-      </div>
-      <div class="crypto-card reveal reveal-delay-2" data-symbol="BNBUSDT" data-name="BNB">
-        <div class="crypto-top"><span class="crypto-name">BNB</span><span class="crypto-symbol">BNB</span></div>
-        <div class="crypto-price">Yükleniyor</div><div class="crypto-change">24s değişim</div>
-      </div>
-      <div class="crypto-card reveal reveal-delay-3" data-symbol="SOLUSDT" data-name="Solana">
-        <div class="crypto-top"><span class="crypto-name">Solana</span><span class="crypto-symbol">SOL</span></div>
-        <div class="crypto-price">Yükleniyor</div><div class="crypto-change">24s değişim</div>
-      </div>
-      <div class="crypto-card reveal" data-symbol="XRPUSDT" data-name="XRP">
-        <div class="crypto-top"><span class="crypto-name">XRP</span><span class="crypto-symbol">XRP</span></div>
-        <div class="crypto-price">Yükleniyor</div><div class="crypto-change">24s değişim</div>
-      </div>
-      <div class="crypto-card reveal reveal-delay-1" data-symbol="DOGEUSDT" data-name="Dogecoin">
-        <div class="crypto-top"><span class="crypto-name">Dogecoin</span><span class="crypto-symbol">DOGE</span></div>
-        <div class="crypto-price">Yükleniyor</div><div class="crypto-change">24s değişim</div>
-      </div>
+    <div class="crypto-grid" id="cryptoGrid">
+      <div class="crypto-loading">Canlı veriler yükleniyor...</div>
     </div>
   </div>
 </section>
@@ -1253,6 +1490,7 @@
       <h2 class="section-title">Hedeflerinize uygun<br>esnek planlar</h2>
       <p class="section-desc">Tüm planlar WhatsApp desteği ve özel danışmanlık içerir. İstediğiniz zaman plan değiştirme imkânı.</p>
     </div>
+
     <div class="pricing-grid">
       <div class="pricing-card reveal reveal-delay-1">
         <div class="plan-name">Günlük</div>
@@ -1262,10 +1500,11 @@
           <li>Günlük piyasa analizi</li>
           <li>2-5 trade sinyali</li>
           <li>WhatsApp bildirimleri</li>
-          <li>%2-5 günlük hedef</li>
+          <li>%2–5 günlük hedef</li>
         </ul>
         <a href="https://wa.me/905413406995?text=Merhaba%2C%20dan%C4%B1%C5%9Fmanl%C4%B1k%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum%20yard%C4%B1mc%C4%B1%20olabilir%20misiniz%20%3F" target="_blank" class="btn-plan btn-plan-outline">Başla</a>
       </div>
+
       <div class="pricing-card featured reveal reveal-delay-2">
         <div class="plan-name">Aylık</div>
         <div class="plan-price"><sup>₺</sup>3.000</div>
@@ -1273,12 +1512,13 @@
         <ul class="plan-features">
           <li>Haftalık strateji raporu</li>
           <li>Sınırsız sinyaller</li>
-          <li>Birebir görüşme (2x/ay)</li>
+          <li>Birebir görüşme (2×/ay)</li>
           <li>Risk yönetimi desteği</li>
-          <li>%10-20 aylık hedef</li>
+          <li>%10–20 aylık hedef</li>
         </ul>
         <a href="https://wa.me/905413406995?text=Merhaba%2C%20dan%C4%B1%C5%9Fmanl%C4%B1k%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum%20yard%C4%B1mc%C4%B1%20olabilir%20misiniz%20%3F" target="_blank" class="btn-plan btn-plan-solid">Hemen Başla</a>
       </div>
+
       <div class="pricing-card reveal reveal-delay-3">
         <div class="plan-name">Yıllık</div>
         <div class="plan-price"><sup>₺</sup>20.000</div>
@@ -1293,13 +1533,41 @@
         <a href="https://wa.me/905413406995?text=Merhaba%2C%20dan%C4%B1%C5%9Fmanl%C4%B1k%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum%20yard%C4%B1mc%C4%B1%20olabilir%20misiniz%20%3F" target="_blank" class="btn-plan btn-plan-outline">Başla</a>
       </div>
     </div>
+
     <div class="payment-methods reveal">
-      <h3>Ödeme Yöntemleri</h3>
-      <div class="payment-grid">
-        <div class="payment-item"><strong>Banka Havalesi / EFT</strong><span>Türkiye içi güvenli ödeme.</span></div>
-        <div class="payment-item"><strong>Kredi / Banka Kartı</strong><span>Talep üzerine kartlı ödeme bilgisi.</span></div>
-        <div class="payment-item"><strong>Kripto Ödeme</strong><span>USDT ve popüler ağlarla ödeme seçeneği.</span></div>
+      <div class="payment-head">
+        <span class="section-tag">Ödeme Yöntemleri</span>
+        <h3>Size uygun ödeme seçeneğini kullanın</h3>
+        <p>Planınızı seçtikten sonra ödeme bilgileri WhatsApp üzerinden güvenli şekilde paylaşılır.</p>
       </div>
+
+      <div class="payment-grid">
+        <div class="payment-card">
+          <div class="payment-icon">₺</div>
+          <div>
+            <h4>Banka Havalesi / EFT</h4>
+            <p>Türkiye içi banka transferi ile hızlı ve güvenli ödeme.</p>
+          </div>
+        </div>
+
+        <div class="payment-card">
+          <div class="payment-icon">💳</div>
+          <div>
+            <h4>Kredi / Banka Kartı</h4>
+            <p>Kart ile ödeme talebiniz için bağlantı WhatsApp üzerinden iletilir.</p>
+          </div>
+        </div>
+
+        <div class="payment-card">
+          <div class="payment-icon">₿</div>
+          <div>
+            <h4>Kripto Ödeme</h4>
+            <p>USDT ve seçili kripto varlıklarla ödeme seçeneği sunulur.</p>
+          </div>
+        </div>
+      </div>
+
+      <a href="https://wa.me/905413406995?text=Merhaba%2C%20dan%C4%B1%C5%9Fmanl%C4%B1k%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum%20yard%C4%B1mc%C4%B1%20olabilir%20misiniz%20%3F" target="_blank" class="payment-cta">Ödeme Bilgisi Al</a>
     </div>
   </div>
 </section>
@@ -1307,9 +1575,7 @@
 <footer id="iletisim">
   <div class="footer-grid">
     <div class="footer-brand reveal">
-      <div class="logo-text">
-        <img alt="Belfort" src="data:image/jpeg;base64,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">
-      </div>
+      <div class="logo-text">BELFORT</div>
       <p>Finansal piyasalarda profesyonel danışmanlık. Disiplinli analiz ve kişisel strateji ile yatırımcıların yanındayız.</p>
     </div>
     <div class="footer-col reveal reveal-delay-1">
@@ -1333,7 +1599,7 @@
       <h4>İletişim</h4>
       <ul>
         <li><a href="mailto:eraybelfort@gmail.com">eraybelfort@gmail.com</a></li>
-        <li><a href="https://wa.me/905413406995?text=Merhaba%2C%20dan%C4%B1%C5%9Fmanl%C4%B1k%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum%20yard%C4%B1mc%C4%B1%20olabilir%20misiniz%20%3F">0541 340 69 95</a></li>
+        <li><a href="https://wa.me/905413406995?text=Merhaba%2C%20dan%C4%B1%C5%9Fmanl%C4%B1k%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum%20yard%C4%B1mc%C4%B1%20olabilir%20misiniz%20%3F" target="_blank">0541 340 69 95</a></li>
         <li><a href="https://wa.me/905413406995?text=Merhaba%2C%20dan%C4%B1%C5%9Fmanl%C4%B1k%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum%20yard%C4%B1mc%C4%B1%20olabilir%20misiniz%20%3F" target="_blank">WhatsApp →</a></li>
       </ul>
     </div>
@@ -1353,95 +1619,7 @@
   </svg>
 </a>
 
-<div class="modal" id="serviceModal">
-  <div class="modal-box">
-    <div class="modal-header">
-      <div>
-        <h3 class="modal-title" id="serviceModalTitle">Başlık</h3>
-        <p class="modal-subtitle" id="serviceModalSubtitle">Belfort finansal danışmanlık</p>
-      </div>
-      <button class="modal-close" onclick="closeServiceModal()" aria-label="Pencereyi kapat">×</button>
-    </div>
-    <div class="modal-body">
-      <div class="service-modal-text" id="serviceModalText"></div>
-    </div>
-  </div>
-</div>
-
-<div class="modal" id="chartModal">
-  <div class="modal-box">
-    <div class="modal-header">
-      <div>
-        <h3 class="modal-title" id="chartTitle">BTCUSDT</h3>
-        <p class="modal-subtitle" id="chartSubtitle">Canlı mum grafik</p>
-      </div>
-      <button class="modal-close" onclick="closeChartModal()" aria-label="Grafiği kapat">×</button>
-    </div>
-    <div class="modal-body">
-      <div class="chart-tools">
-        <div class="timeframes">
-          <button class="timeframe-btn active" data-interval="15m">15D</button>
-          <button class="timeframe-btn" data-interval="1h">1S</button>
-          <button class="timeframe-btn" data-interval="4h">4S</button>
-          <button class="timeframe-btn" data-interval="1d">1G</button>
-        </div>
-        <p class="modal-subtitle">Veriler Binance üzerinden alınır.</p>
-      </div>
-      <div class="chart-panel">
-        <canvas id="coinChart"></canvas>
-      </div>
-      <div class="chart-stats">
-        <div class="chart-stat"><span>Açılış</span><strong id="statOpen">-</strong></div>
-        <div class="chart-stat"><span>Yüksek</span><strong id="statHigh">-</strong></div>
-        <div class="chart-stat"><span>Düşük</span><strong id="statLow">-</strong></div>
-        <div class="chart-stat"><span>Hacim</span><strong id="statVolume">-</strong></div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script>
-  const whatsappUrl = 'https://wa.me/905413406995?text=Merhaba%2C%20dan%C4%B1%C5%9Fmanl%C4%B1k%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum%20yard%C4%B1mc%C4%B1%20olabilir%20misiniz%20%3F';
-
-  const bgCanvas = document.getElementById("bgChart");
-  const bgCtx = bgCanvas.getContext("2d");
-
-  let bgW, bgH;
-  function resizeBackgroundChart() {
-    bgW = bgCanvas.width = window.innerWidth;
-    bgH = bgCanvas.height = window.innerHeight;
-  }
-  resizeBackgroundChart();
-  window.addEventListener("resize", resizeBackgroundChart);
-
-  let bgPoints = [];
-  for (let i = 0; i < 60; i++) {
-    bgPoints.push(Math.random() * bgH);
-  }
-
-  function drawBackgroundChart() {
-    bgCtx.clearRect(0, 0, bgW, bgH);
-    bgCtx.beginPath();
-    bgCtx.lineWidth = 2;
-    bgCtx.strokeStyle = "#22c55e";
-
-    for (let i = 0; i < bgPoints.length; i++) {
-      let x = (bgW / bgPoints.length) * i;
-      let y = bgPoints[i];
-
-      if (i === 0) bgCtx.moveTo(x, y);
-      else bgCtx.lineTo(x, y);
-
-      bgPoints[i] += (Math.random() - 0.5) * 4;
-      bgPoints[i] = Math.max(40, Math.min(bgH - 40, bgPoints[i]));
-    }
-
-    bgCtx.stroke();
-    requestAnimationFrame(drawBackgroundChart);
-  }
-
-  drawBackgroundChart();
-
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => {
@@ -1500,279 +1678,491 @@
   }, { threshold: 0.5 });
   statNums.forEach(el => statObserver.observe(el));
 
-  const serviceContents = {
+  const canvas = document.getElementById("bgChart");
+  const ctx = canvas.getContext("2d");
+
+  let w, h;
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener("resize", resize);
+
+  let points = [];
+  for (let i = 0; i < 60; i++) {
+    points.push(Math.random() * h);
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    ctx.beginPath();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "#22c55e";
+
+    for (let i = 0; i < points.length; i++) {
+      let x = (w / points.length) * i;
+      let y = points[i];
+
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+
+      points[i] += (Math.random() - 0.5) * 4;
+    }
+
+    ctx.stroke();
+    requestAnimationFrame(draw);
+  }
+
+  draw();
+
+  const serviceDetails = {
     analysis: {
+      tag: 'Stratejik Analiz',
       title: 'Piyasa Analizi',
-      subtitle: 'Veriye dayalı, disiplinli ve uygulanabilir piyasa okuması',
-      text: [
-        'Belfort piyasa analizi; teknik görünüm, temel veriler, makro ekonomik gelişmeler ve piyasa psikolojisini birlikte değerlendirir. Amaç yalnızca fiyatın nereye gidebileceğini tahmin etmek değil, olası senaryoları riskleriyle birlikte netleştirmektir.',
-        'Her analizde destek-direnç bölgeleri, trend yapısı, hacim davranışı, volatilite ve haber akışı birlikte ele alınır. Bu sayede yatırımcı kararlarını duyguya göre değil, ölçülebilir ve takip edilebilir bir plana göre verir.',
-        'Günlük, haftalık ve aylık değerlendirmelerle piyasanın ana yönü, fırsat alanları ve dikkat edilmesi gereken risk bölgeleri düzenli olarak paylaşılır.'
+      lead: 'Piyasa analizi hizmetimiz, yatırım kararlarınızı yalnızca fiyat hareketlerine değil; trend yapısı, hacim davranışı, makro gelişmeler ve risk senaryolarına dayandırmanız için tasarlanır.',
+      highlights: [
+        ['Teknik Okuma', 'Trend, destek-direnç ve momentum bölgeleri'],
+        ['Temel Perspektif', 'Haber akışı, piyasa duyarlılığı ve makro görünüm'],
+        ['Risk Senaryosu', 'Olası kırılım, düzeltme ve hedef bölgeleri']
+      ],
+      paragraphs: [
+        'Her analizde piyasanın genel yönünü, güçlü ve zayıf bölgelerini, kritik fiyat seviyelerini ve yatırımcı psikolojisini birlikte değerlendiriyoruz. Böylece yalnızca “ne alınır” sorusuna değil, “neden, ne zaman ve hangi riskle işlem yapılır” sorusuna da cevap veriyoruz.',
+        'Günlük, haftalık ve dönemsel analizlerle yatırımcının piyasayı daha net okumasını hedefliyoruz. Amaç, ani fiyat hareketlerinde panik kararlar almak yerine, önceden belirlenmiş senaryolarla disiplinli hareket etmektir.',
+        'Bu hizmet özellikle piyasayı takip etmek isteyen fakat verileri yorumlamakta zaman veya deneyim eksikliği yaşayan yatırımcılar için güçlü bir karar destek mekanizması sağlar.'
       ]
     },
     signals: {
+      tag: 'Operasyonel Fırsatlar',
       title: 'Trade Sinyalleri',
-      subtitle: 'Net giriş, hedef ve risk yönetimi ile uygulanabilir sinyaller',
-      text: [
-        'Trade sinyalleri, yalnızca potansiyel getiriye göre değil, risk/ödül dengesi ve piyasa koşullarına uygunluk açısından filtrelenir. Her sinyalde giriş bölgesi, hedef seviyeler, stop-loss noktası ve işlem mantığı açık şekilde belirtilir.',
-        'Amaç yatırımcıyı karmaşık grafikler içinde yalnız bırakmak değil, uygulanabilir bir karar çerçevesi sunmaktır. Sinyaller kısa vadeli fırsatları yakalamaya odaklanırken sermaye koruması her zaman öncelik olarak ele alınır.',
-        'Piyasa koşulları değiştiğinde güncellemeler hızlıca paylaşılır; böylece yatırımcı pozisyonunu körü körüne taşımak yerine dinamik bir planla ilerler.'
+      lead: 'Trade sinyalleri hizmetimiz, net giriş bölgesi, hedef fiyat, stop seviyesi ve risk/ödül dengesi belirlenmiş işlem fikirleri sunarak daha disiplinli pozisyon yönetimi sağlar.',
+      highlights: [
+        ['Net Seviye', 'Giriş, hedef ve stop bölgeleri açıkça belirtilir'],
+        ['Risk Yönetimi', 'Pozisyon büyüklüğü ve zarar limiti kontrol edilir'],
+        ['Hızlı Bildirim', 'Piyasa fırsatları zamanında paylaşılır']
+      ],
+      paragraphs: [
+        'Sinyaller yalnızca fiyat yükseliyor ya da düşüyor mantığıyla üretilmez. Önce piyasa yapısı, hacim, trend yönü, kırılım ihtimali ve olası likidite bölgeleri değerlendirilir. Ardından işlem fikri, uygulanabilir ve ölçülebilir hale getirilir.',
+        'Her sinyalde en önemli unsur risk yönetimidir. Bu nedenle hedef kadar stop seviyesi de stratejinin ayrılmaz bir parçasıdır. Böylece yatırımcı, işlem açmadan önce ne kadar risk aldığını ve hangi senaryoda pozisyondan çıkacağını bilir.',
+        'Bu yapı, özellikle piyasa içinde fırsat kaçırmak istemeyen ancak rastgele işlem açmak yerine planlı ilerlemek isteyen yatırımcılar için uygundur.'
       ]
     },
     consulting: {
+      tag: 'Kişisel Strateji',
       title: 'Birebir Danışmanlık',
-      subtitle: 'Profilinize, sermayenize ve hedeflerinize özel yol haritası',
-      text: [
-        'Birebir danışmanlık sürecinde yatırımcının risk toleransı, sermaye büyüklüğü, deneyim seviyesi ve hedefleri birlikte değerlendirilir. Bu bilgiler ışığında kişisel bir strateji ve portföy yaklaşımı oluşturulur.',
-        'Danışmanlık yalnızca işlem fikri paylaşmakla sınırlı değildir. Pozisyon boyutlandırma, risk dağılımı, kâr alma disiplini, zarar kesme alışkanlığı ve işlem psikolojisi de sürecin önemli parçalarıdır.',
-        'Düzenli görüşmeler ve performans değerlendirmeleriyle strateji güncel tutulur. Böylece yatırımcı, piyasanın belirsizliği içinde daha kontrollü, bilinçli ve sürdürülebilir bir şekilde ilerler.'
+      lead: 'Birebir danışmanlık hizmetimiz, yatırımcının hedeflerine, risk toleransına ve sermaye yapısına göre kişiselleştirilmiş finansal yol haritası oluşturmayı amaçlar.',
+      highlights: [
+        ['Kişisel Plan', 'Hedef, sermaye ve risk profiline özel strateji'],
+        ['Portföy Takibi', 'Pozisyon dağılımı ve performans değerlendirmesi'],
+        ['Disiplin', 'Duygusal kararları azaltan sistemli yaklaşım']
+      ],
+      paragraphs: [
+        'Her yatırımcının hedefi, beklentisi ve risk algısı farklıdır. Bu nedenle standart öneriler yerine kişiye özel bir yaklaşım kullanıyoruz. İlk aşamada yatırım profili, zaman ufku, sermaye yapısı ve beklentiler detaylı şekilde değerlendirilir.',
+        'Danışmanlık sürecinde yalnızca işlem fikirleri değil, portföy dengesi, pozisyon boyutu, kâr alma stratejisi ve zarar sınırlama disiplini de ele alınır. Böylece yatırım süreci daha kontrollü ve sürdürülebilir hale gelir.',
+        'Bu hizmet, finansal piyasalarda daha bilinçli hareket etmek, kendi stratejisini oluşturmak ve profesyonel bir bakış açısıyla ilerlemek isteyen yatırımcılar için en kapsamlı çözümdür.'
       ]
     }
   };
 
-  function openServiceModal(type) {
-    const data = serviceContents[type];
-    document.getElementById('serviceModalTitle').textContent = data.title;
-    document.getElementById('serviceModalSubtitle').textContent = data.subtitle;
-    document.getElementById('serviceModalText').innerHTML = data.text.map(p => `<p>${p}</p>`).join('');
-    document.getElementById('serviceModal').classList.add('active');
+  const serviceModal = document.getElementById('serviceModal');
+  const serviceTag = document.getElementById('serviceTag');
+  const serviceTitle = document.getElementById('serviceTitle');
+  const serviceLead = document.getElementById('serviceLead');
+  const serviceHighlights = document.getElementById('serviceHighlights');
+  const serviceBody = document.getElementById('serviceBody');
+
+  function openServiceDetail(serviceKey) {
+    const detail = serviceDetails[serviceKey];
+    if (!detail) return;
+
+    serviceTag.textContent = detail.tag;
+    serviceTitle.textContent = detail.title;
+    serviceLead.textContent = detail.lead;
+
+    serviceHighlights.innerHTML = detail.highlights.map(item => `
+      <div class="service-detail-item">
+        <span>${item[0]}</span>
+        <strong>${item[1]}</strong>
+      </div>
+    `).join('');
+
+    serviceBody.innerHTML = detail.paragraphs.map(text => `<p>${text}</p>`).join('');
+
+    serviceModal.classList.add('open');
+    serviceModal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open');
   }
 
-  function closeServiceModal() {
-    document.getElementById('serviceModal').classList.remove('active');
+  function closeServiceDetail() {
+    serviceModal.classList.remove('open');
+    serviceModal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
   }
 
-  const cryptoCards = document.querySelectorAll('.crypto-card');
-  const tickerSymbols = Array.from(cryptoCards).map(card => card.dataset.symbol.toLowerCase());
-  let tickerSocket;
+  document.querySelectorAll('.service-detail-trigger').forEach(button => {
+    button.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openServiceDetail(button.dataset.service);
+    });
+  });
 
-  function formatPrice(price) {
-    const num = Number(price);
-    if (num >= 1000) return '$' + num.toLocaleString('en-US', { maximumFractionDigits: 0 });
-    if (num >= 1) return '$' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    return '$' + num.toFixed(4);
+  document.querySelectorAll('[data-close-service]').forEach(el => {
+    el.addEventListener('click', closeServiceDetail);
+  });
+
+  const cryptoPairs = [
+    { symbol: 'BTCUSDT', label: 'BTC' },
+    { symbol: 'ETHUSDT', label: 'ETH' },
+    { symbol: 'BNBUSDT', label: 'BNB' },
+    { symbol: 'SOLUSDT', label: 'SOL' },
+    { symbol: 'XRPUSDT', label: 'XRP' },
+    { symbol: 'DOGEUSDT', label: 'DOGE' },
+    { symbol: 'ADAUSDT', label: 'ADA' },
+    { symbol: 'AVAXUSDT', label: 'AVAX' }
+  ];
+
+  const cryptoGrid = document.getElementById('cryptoGrid');
+
+  function formatPrice(value) {
+    const number = Number(value);
+    if (number >= 1000) return number.toLocaleString('en-US', { maximumFractionDigits: 0 });
+    if (number >= 1) return number.toLocaleString('en-US', { maximumFractionDigits: 2 });
+    return number.toLocaleString('en-US', { maximumFractionDigits: 5 });
   }
 
   function formatVolume(value) {
-    const num = Number(value);
-    if (num >= 1000000000) return (num / 1000000000).toFixed(2) + 'B';
-    if (num >= 1000000) return (num / 1000000).toFixed(2) + 'M';
-    if (num >= 1000) return (num / 1000).toFixed(2) + 'K';
-    return num.toFixed(2);
+    const number = Number(value);
+    if (number >= 1000000000) return `${(number / 1000000000).toFixed(2)}B`;
+    if (number >= 1000000) return `${(number / 1000000).toFixed(2)}M`;
+    if (number >= 1000) return `${(number / 1000).toFixed(2)}K`;
+    return number.toFixed(2);
   }
 
-  function startTickerSocket() {
-    const streams = tickerSymbols.map(symbol => `${symbol}@ticker`).join('/');
-    tickerSocket = new WebSocket(`wss://stream.binance.com:9443/stream?streams=${streams}`);
+  function renderCryptoCards() {
+    cryptoGrid.innerHTML = cryptoPairs.map(pair => `
+      <div class="crypto-card" data-symbol="${pair.symbol}" data-label="${pair.label}" role="button" tabindex="0">
+        <div class="crypto-top">
+          <span class="crypto-symbol">${pair.label}/USDT</span>
+          <span class="crypto-live">CANLI</span>
+        </div>
+        <div class="crypto-price">$--</div>
+        <div class="crypto-change">24s: --</div>
+        <div class="crypto-meta">Detaylı grafiği aç</div>
+      </div>
+    `).join('');
+  }
 
-    tickerSocket.onmessage = (event) => {
+  function updateCryptoCard(data) {
+    const card = document.querySelector(`[data-symbol="${data.s}"]`);
+    if (!card) return;
+
+    const price = card.querySelector('.crypto-price');
+    const change = card.querySelector('.crypto-change');
+    const changeValue = Number(data.P);
+
+    price.textContent = `$${formatPrice(data.c)}`;
+    change.textContent = `24s: ${changeValue >= 0 ? '+' : ''}${changeValue.toFixed(2)}%`;
+    change.classList.toggle('up', changeValue >= 0);
+    change.classList.toggle('down', changeValue < 0);
+  }
+
+  function startCryptoTicker() {
+    renderCryptoCards();
+
+    const streams = cryptoPairs.map(pair => `${pair.symbol.toLowerCase()}@ticker`).join('/');
+    const socket = new WebSocket(`wss://stream.binance.com:9443/stream?streams=${streams}`);
+
+    socket.onmessage = (event) => {
       const message = JSON.parse(event.data);
-      const data = message.data;
-      const card = document.querySelector(`.crypto-card[data-symbol="${data.s}"]`);
-      if (!card) return;
+      updateCryptoCard(message.data);
+    };
 
-      const priceEl = card.querySelector('.crypto-price');
-      const changeEl = card.querySelector('.crypto-change');
-      const change = Number(data.P);
-
-      priceEl.textContent = formatPrice(data.c);
-      changeEl.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}% son 24s`;
-      changeEl.classList.toggle('up', change >= 0);
-      changeEl.classList.toggle('down', change < 0);
+    socket.onerror = () => {
+      cryptoGrid.innerHTML = '<div class="crypto-loading">Canlı veri bağlantısı şu anda kurulamadı.</div>';
     };
   }
 
-  startTickerSocket();
-
+  let chartCandles = [];
+  let activeKlineSocket = null;
   let activeSymbol = 'BTCUSDT';
-  let activeName = 'Bitcoin';
-  let activeInterval = '15m';
-  let klines = [];
-  let chartSocket;
+  let activeLabel = 'BTC';
+  let activeInterval = '1h';
 
-  const chartCanvas = document.getElementById('coinChart');
-  const chartCtx = chartCanvas.getContext('2d');
+  const chartModal = document.getElementById('chartModal');
+  const coinChart = document.getElementById('coinChart');
+  const coinCtx = coinChart.getContext('2d');
+  const chartTitle = document.getElementById('chartTitle');
+  const chartPrice = document.getElementById('chartPrice');
+  const chartChange = document.getElementById('chartChange');
+  const chartNote = document.getElementById('chartNote');
+  const statOpen = document.getElementById('statOpen');
+  const statHigh = document.getElementById('statHigh');
+  const statLow = document.getElementById('statLow');
+  const statVolume = document.getElementById('statVolume');
 
-  function resizeCoinChart() {
-    const rect = chartCanvas.parentElement.getBoundingClientRect();
-    chartCanvas.width = rect.width * window.devicePixelRatio;
-    chartCanvas.height = rect.height * window.devicePixelRatio;
-    chartCtx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
-    drawCoinChart();
+  function intervalLabel(interval) {
+    if (interval === '15m') return '15 dakikalık';
+    if (interval === '1h') return '1 saatlik';
+    if (interval === '4h') return '4 saatlik';
+    return '1 günlük';
   }
 
-  function openChartModal(symbol, name) {
-    activeSymbol = symbol;
-    activeName = name;
-    document.getElementById('chartTitle').textContent = `${name} / USDT`;
-    document.getElementById('chartSubtitle').textContent = `${symbol} canlı mum grafik`;
-    document.getElementById('chartModal').classList.add('active');
-    setTimeout(resizeCoinChart, 50);
-    loadKlines();
+  function updateChartStats(candles) {
+    if (!candles.length) return;
+
+    const first = candles[0];
+    const last = candles[candles.length - 1];
+    const high = Math.max(...candles.map(c => c.high));
+    const low = Math.min(...candles.map(c => c.low));
+    const volume = candles.reduce((sum, c) => sum + c.volume, 0);
+    const change = ((last.close - first.open) / first.open) * 100;
+
+    chartPrice.textContent = `$${formatPrice(last.close)}`;
+    chartChange.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
+    chartChange.classList.toggle('up', change >= 0);
+    chartChange.classList.toggle('down', change < 0);
+
+    statOpen.textContent = `$${formatPrice(first.open)}`;
+    statHigh.textContent = `$${formatPrice(high)}`;
+    statLow.textContent = `$${formatPrice(low)}`;
+    statVolume.textContent = formatVolume(volume);
   }
 
-  function closeChartModal() {
-    document.getElementById('chartModal').classList.remove('active');
-    if (chartSocket) chartSocket.close();
-  }
+  function drawCandlestickChart(candles) {
+    if (!candles.length) return;
 
-  cryptoCards.forEach(card => {
-    card.addEventListener('click', () => openChartModal(card.dataset.symbol, card.dataset.name));
-  });
+    const rect = coinChart.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    coinChart.width = rect.width * dpr;
+    coinChart.height = rect.height * dpr;
+    coinCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-  document.querySelectorAll('.timeframe-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.timeframe-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      activeInterval = btn.dataset.interval;
-      loadKlines();
-    });
-  });
-
-  async function loadKlines() {
-    if (chartSocket) chartSocket.close();
-
-    try {
-      const res = await fetch(`https://api.binance.com/api/v3/klines?symbol=${activeSymbol}&interval=${activeInterval}&limit=80`);
-      const data = await res.json();
-      klines = data.map(k => ({
-        openTime: k[0],
-        open: Number(k[1]),
-        high: Number(k[2]),
-        low: Number(k[3]),
-        close: Number(k[4]),
-        volume: Number(k[5])
-      }));
-      updateChartStats();
-      drawCoinChart();
-      startChartSocket();
-    } catch (error) {
-      drawChartError();
-    }
-  }
-
-  function startChartSocket() {
-    chartSocket = new WebSocket(`wss://stream.binance.com:9443/ws/${activeSymbol.toLowerCase()}@kline_${activeInterval}`);
-    chartSocket.onmessage = (event) => {
-      const data = JSON.parse(event.data).k;
-      const candle = {
-        openTime: data.t,
-        open: Number(data.o),
-        high: Number(data.h),
-        low: Number(data.l),
-        close: Number(data.c),
-        volume: Number(data.v)
-      };
-
-      const last = klines[klines.length - 1];
-      if (last && last.openTime === candle.openTime) {
-        klines[klines.length - 1] = candle;
-      } else {
-        klines.push(candle);
-        if (klines.length > 80) klines.shift();
-      }
-
-      updateChartStats();
-      drawCoinChart();
-    };
-  }
-
-  function updateChartStats() {
-    const last = klines[klines.length - 1];
-    if (!last) return;
-
-    document.getElementById('statOpen').textContent = formatPrice(last.open);
-    document.getElementById('statHigh').textContent = formatPrice(last.high);
-    document.getElementById('statLow').textContent = formatPrice(last.low);
-    document.getElementById('statVolume').textContent = formatVolume(last.volume);
-  }
-
-  function drawCoinChart() {
-    if (!chartCanvas || !klines.length) return;
-
-    const rect = chartCanvas.parentElement.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
-    const pad = 36;
+    const padLeft = 54;
+    const padRight = 76;
+    const padTop = 26;
+    const padBottom = 78;
+    const chartWidth = width - padLeft - padRight;
+    const priceHeight = height - padTop - padBottom;
+    const volumeTop = height - 54;
+    const volumeHeight = 34;
 
-    chartCtx.clearRect(0, 0, width, height);
-    chartCtx.fillStyle = '#050505';
-    chartCtx.fillRect(0, 0, width, height);
+    const highs = candles.map(c => c.high);
+    const lows = candles.map(c => c.low);
+    let maxPrice = Math.max(...highs);
+    let minPrice = Math.min(...lows);
+    const pricePadding = (maxPrice - minPrice) * 0.08 || maxPrice * 0.01;
+    maxPrice += pricePadding;
+    minPrice -= pricePadding;
 
-    const highs = klines.map(k => k.high);
-    const lows = klines.map(k => k.low);
-    const max = Math.max(...highs);
-    const min = Math.min(...lows);
-    const range = max - min || 1;
-    const chartW = width - pad * 2;
-    const chartH = height - pad * 2;
-    const step = chartW / klines.length;
-    const candleW = Math.max(4, Math.min(11, step * 0.56));
+    const maxVolume = Math.max(...candles.map(c => c.volume)) || 1;
+    const yPrice = (price) => padTop + ((maxPrice - price) / (maxPrice - minPrice)) * priceHeight;
+    const xCandle = (i) => padLeft + (i + 0.5) * (chartWidth / candles.length);
 
-    chartCtx.strokeStyle = 'rgba(255,255,255,0.06)';
-    chartCtx.lineWidth = 1;
-    for (let i = 0; i <= 4; i++) {
-      const y = pad + (chartH / 4) * i;
-      chartCtx.beginPath();
-      chartCtx.moveTo(pad, y);
-      chartCtx.lineTo(width - pad, y);
-      chartCtx.stroke();
+    coinCtx.clearRect(0, 0, width, height);
+    coinCtx.strokeStyle = 'rgba(255,255,255,0.06)';
+    coinCtx.lineWidth = 1;
+    coinCtx.fillStyle = 'rgba(255,255,255,0.32)';
+    coinCtx.font = '11px DM Sans, sans-serif';
 
-      const price = max - (range / 4) * i;
-      chartCtx.fillStyle = 'rgba(255,255,255,0.42)';
-      chartCtx.font = '11px DM Sans';
-      chartCtx.fillText(formatPrice(price), width - pad + 6, y + 4);
+    for (let i = 0; i <= 5; i++) {
+      const y = padTop + (priceHeight / 5) * i;
+      const price = maxPrice - ((maxPrice - minPrice) / 5) * i;
+      coinCtx.beginPath();
+      coinCtx.moveTo(padLeft, y);
+      coinCtx.lineTo(width - padRight, y);
+      coinCtx.stroke();
+      coinCtx.fillText(`$${formatPrice(price)}`, width - padRight + 10, y + 4);
     }
 
-    klines.forEach((k, i) => {
-      const x = pad + i * step + step / 2;
-      const openY = pad + ((max - k.open) / range) * chartH;
-      const closeY = pad + ((max - k.close) / range) * chartH;
-      const highY = pad + ((max - k.high) / range) * chartH;
-      const lowY = pad + ((max - k.low) / range) * chartH;
-      const up = k.close >= k.open;
-      const color = up ? '#22c55e' : '#ef4444';
+    for (let i = 0; i <= 5; i++) {
+      const x = padLeft + (chartWidth / 5) * i;
+      coinCtx.beginPath();
+      coinCtx.moveTo(x, padTop);
+      coinCtx.lineTo(x, height - 20);
+      coinCtx.stroke();
+    }
 
-      chartCtx.strokeStyle = color;
-      chartCtx.fillStyle = color;
-      chartCtx.lineWidth = 1.4;
+    const candleGap = chartWidth / candles.length;
+    const candleWidth = Math.max(4, Math.min(12, candleGap * 0.62));
 
-      chartCtx.beginPath();
-      chartCtx.moveTo(x, highY);
-      chartCtx.lineTo(x, lowY);
-      chartCtx.stroke();
-
+    candles.forEach((candle, i) => {
+      const x = xCandle(i);
+      const openY = yPrice(candle.open);
+      const closeY = yPrice(candle.close);
+      const highY = yPrice(candle.high);
+      const lowY = yPrice(candle.low);
+      const isUp = candle.close >= candle.open;
+      const color = isUp ? '#22c55e' : '#ef4444';
       const bodyTop = Math.min(openY, closeY);
       const bodyHeight = Math.max(2, Math.abs(closeY - openY));
-      chartCtx.fillRect(x - candleW / 2, bodyTop, candleW, bodyHeight);
+
+      coinCtx.strokeStyle = color;
+      coinCtx.lineWidth = 1.2;
+      coinCtx.beginPath();
+      coinCtx.moveTo(x, highY);
+      coinCtx.lineTo(x, lowY);
+      coinCtx.stroke();
+
+      coinCtx.fillStyle = color;
+      coinCtx.fillRect(x - candleWidth / 2, bodyTop, candleWidth, bodyHeight);
+
+      const volumeBarHeight = (candle.volume / maxVolume) * volumeHeight;
+      coinCtx.fillStyle = isUp ? 'rgba(34,197,94,0.28)' : 'rgba(239,68,68,0.24)';
+      coinCtx.fillRect(x - candleWidth / 2, volumeTop + volumeHeight - volumeBarHeight, candleWidth, volumeBarHeight);
+    });
+
+    const last = candles[candles.length - 1];
+    const lastY = yPrice(last.close);
+
+    coinCtx.setLineDash([6, 6]);
+    coinCtx.strokeStyle = 'rgba(34,197,94,0.45)';
+    coinCtx.beginPath();
+    coinCtx.moveTo(padLeft, lastY);
+    coinCtx.lineTo(width - padRight, lastY);
+    coinCtx.stroke();
+    coinCtx.setLineDash([]);
+
+    coinCtx.fillStyle = '#22c55e';
+    coinCtx.fillRect(width - padRight + 8, lastY - 13, 62, 24);
+    coinCtx.fillStyle = '#000';
+    coinCtx.font = '11px DM Sans, sans-serif';
+    coinCtx.fillText(`$${formatPrice(last.close)}`, width - padRight + 14, lastY + 4);
+
+    coinCtx.fillStyle = 'rgba(255,255,255,0.38)';
+    coinCtx.font = '10px DM Sans, sans-serif';
+
+    for (let i = 0; i < candles.length; i += Math.ceil(candles.length / 5)) {
+      const date = new Date(candles[i].time);
+      const label = date.toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit' });
+      coinCtx.fillText(label, xCandle(i) - 18, height - 18);
+    }
+
+    coinCtx.fillStyle = 'rgba(255,255,255,0.28)';
+    coinCtx.fillText('Hacim', padLeft, volumeTop - 8);
+  }
+
+  async function loadCryptoChart(symbol, label, interval) {
+    chartTitle.textContent = `${label}/USDT`;
+    chartPrice.textContent = '$--';
+    chartChange.textContent = '--';
+    chartNote.textContent = 'Grafik yükleniyor...';
+    statOpen.textContent = '--';
+    statHigh.textContent = '--';
+    statLow.textContent = '--';
+    statVolume.textContent = '--';
+
+    if (activeKlineSocket) activeKlineSocket.close();
+
+    try {
+      const response = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=90`);
+      const data = await response.json();
+
+      chartCandles = data.map(item => ({
+        time: item[0],
+        open: Number(item[1]),
+        high: Number(item[2]),
+        low: Number(item[3]),
+        close: Number(item[4]),
+        volume: Number(item[5])
+      }));
+
+      chartNote.textContent = `Son 90 adet ${intervalLabel(interval)} Binance mum verisi`;
+      updateChartStats(chartCandles);
+      requestAnimationFrame(() => drawCandlestickChart(chartCandles));
+
+      activeKlineSocket = new WebSocket(`wss://stream.binance.com:9443/ws/${symbol.toLowerCase()}@kline_${interval}`);
+      activeKlineSocket.onmessage = (event) => {
+        const message = JSON.parse(event.data);
+        const k = message.k;
+        const candle = {
+          time: k.t,
+          open: Number(k.o),
+          high: Number(k.h),
+          low: Number(k.l),
+          close: Number(k.c),
+          volume: Number(k.v)
+        };
+
+        const last = chartCandles[chartCandles.length - 1];
+        if (last && last.time === candle.time) {
+          chartCandles[chartCandles.length - 1] = candle;
+        } else {
+          chartCandles.push(candle);
+          if (chartCandles.length > 90) chartCandles.shift();
+        }
+
+        updateChartStats(chartCandles);
+        drawCandlestickChart(chartCandles);
+      };
+    } catch (error) {
+      chartNote.textContent = 'Grafik verisi şu anda alınamadı.';
+    }
+  }
+
+  function openCryptoChart(symbol, label) {
+    activeSymbol = symbol;
+    activeLabel = label;
+    chartModal.classList.add('open');
+    chartModal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open');
+    requestAnimationFrame(() => {
+      loadCryptoChart(activeSymbol, activeLabel, activeInterval);
     });
   }
 
-  function drawChartError() {
-    const rect = chartCanvas.parentElement.getBoundingClientRect();
-    chartCtx.clearRect(0, 0, rect.width, rect.height);
-    chartCtx.fillStyle = '#050505';
-    chartCtx.fillRect(0, 0, rect.width, rect.height);
-    chartCtx.fillStyle = 'rgba(255,255,255,0.72)';
-    chartCtx.font = '14px DM Sans';
-    chartCtx.fillText('Grafik verisi şu anda alınamadı.', 28, 42);
+  function closeCryptoChart() {
+    chartModal.classList.remove('open');
+    chartModal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
+
+    if (activeKlineSocket) {
+      activeKlineSocket.close();
+      activeKlineSocket = null;
+    }
   }
 
-  window.addEventListener('resize', resizeCoinChart);
+  cryptoGrid.addEventListener('click', (e) => {
+    const card = e.target.closest('.crypto-card');
+    if (!card) return;
+    openCryptoChart(card.dataset.symbol, card.dataset.label);
+  });
 
-  document.querySelectorAll('.modal').forEach(modal => {
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) modal.classList.remove('active');
-      if (modal.id === 'chartModal' && e.target === modal && chartSocket) chartSocket.close();
+  cryptoGrid.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return;
+    const card = e.target.closest('.crypto-card');
+    if (!card) return;
+    openCryptoChart(card.dataset.symbol, card.dataset.label);
+  });
+
+  document.querySelectorAll('[data-close-chart]').forEach(el => {
+    el.addEventListener('click', closeCryptoChart);
+  });
+
+  document.querySelectorAll('.chart-tab').forEach(button => {
+    button.addEventListener('click', () => {
+      document.querySelectorAll('.chart-tab').forEach(tab => tab.classList.remove('active'));
+      button.classList.add('active');
+      activeInterval = button.dataset.interval;
+      loadCryptoChart(activeSymbol, activeLabel, activeInterval);
     });
   });
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      closeServiceModal();
-      closeChartModal();
+      if (chartModal.classList.contains('open')) closeCryptoChart();
+      if (serviceModal.classList.contains('open')) closeServiceDetail();
     }
   });
+
+  window.addEventListener('resize', () => {
+    if (chartModal.classList.contains('open') && chartCandles.length) {
+      drawCandlestickChart(chartCandles);
+    }
+  });
+
+  startCryptoTicker();
 </script>
 </body>
 </html>
