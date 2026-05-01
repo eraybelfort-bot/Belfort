@@ -90,14 +90,14 @@
   }
 
   .nav-logo {
-    width: 182px;
-    height: 50px;
+    width: 190px;
+    height: 52px;
     display: inline-flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     overflow: hidden;
-    border-radius: 6px;
     text-decoration: none;
+    color: var(--text);
   }
 
   .nav-logo-img {
@@ -105,8 +105,16 @@
     height: 100%;
     object-fit: cover;
     object-position: center;
-    transform: scale(1.35);
     display: block;
+  }
+
+  .nav-logo.logo-missing::after {
+    content: 'BELFORT';
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    color: var(--text);
   }
 
   .nav-links {
@@ -440,7 +448,8 @@
     padding: 0;
   }
 
-  .service-modal {
+  .service-modal,
+  .chart-modal {
     position: fixed !important;
     inset: 0 !important;
     display: none;
@@ -451,9 +460,11 @@
     overflow-y: auto;
   }
 
-  .service-modal.open { display: flex; }
+  .service-modal.open,
+  .chart-modal.open { display: flex; }
 
-  .service-backdrop {
+  .service-backdrop,
+  .chart-backdrop {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.78);
@@ -461,20 +472,30 @@
     -webkit-backdrop-filter: blur(16px);
   }
 
-  .service-dialog {
+  .service-dialog,
+  .chart-dialog {
     position: relative;
-    width: min(820px, 100%);
     max-height: calc(100vh - 48px);
     overflow: auto;
     background: rgba(12,12,12,0.98);
     border: 1px solid rgba(255,255,255,0.11);
     border-radius: 18px;
-    padding: 34px;
     box-shadow: 0 30px 120px rgba(0,0,0,0.7);
     animation: chartPop 0.22s ease both;
   }
 
-  .service-close {
+  .service-dialog {
+    width: min(820px, 100%);
+    padding: 34px;
+  }
+
+  .chart-dialog {
+    width: min(980px, 100%);
+    padding: 28px;
+  }
+
+  .service-close,
+  .chart-close {
     position: absolute;
     top: 16px;
     right: 16px;
@@ -709,40 +730,6 @@
     background: var(--surface);
   }
 
-  .chart-modal {
-    position: fixed !important;
-    inset: 0 !important;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    z-index: 9999 !important;
-    overflow-y: auto;
-  }
-
-  .chart-modal.open { display: flex; }
-
-  .chart-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.78);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-  }
-
-  .chart-dialog {
-    position: relative;
-    width: min(980px, 100%);
-    max-height: calc(100vh - 48px);
-    overflow: auto;
-    background: rgba(12,12,12,0.98);
-    border: 1px solid rgba(255,255,255,0.11);
-    border-radius: 18px;
-    padding: 28px;
-    box-shadow: 0 30px 120px rgba(0,0,0,0.7);
-    animation: chartPop 0.22s ease both;
-  }
-
   @keyframes chartPop {
     from { opacity: 0; transform: translateY(16px) scale(0.98); }
     to { opacity: 1; transform: translateY(0) scale(1); }
@@ -782,21 +769,6 @@
 
   .chart-change.up { color: var(--accent); }
   .chart-change.down { color: var(--danger); }
-
-  .chart-close {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text);
-    font-size: 24px;
-    cursor: pointer;
-    line-height: 1;
-  }
 
   .chart-toolbar {
     display: flex;
@@ -1254,7 +1226,7 @@
 
   @media (max-width: 768px) {
     nav { padding: 0 24px; }
-    .nav-logo { width: 148px; height: 42px; }
+    .nav-logo { width: 154px; height: 44px; }
     .nav-links { display: none; }
 
     section { padding: 80px 24px; }
@@ -1380,7 +1352,7 @@
 
 <nav id="navbar">
   <a href="#" class="nav-logo" aria-label="Belfort ana sayfa">
-    <img src="file:///C:/Users/mrbbn/Desktop/LOGO.jpeg" alt="Belfort" class="nav-logo-img">
+    <img src="LOGO.jpeg" alt="" class="nav-logo-img" onerror="this.style.display='none'; this.parentElement.classList.add('logo-missing');">
   </a>
   <ul class="nav-links">
     <li><a href="#hizmet">Hizmetler</a></li>
