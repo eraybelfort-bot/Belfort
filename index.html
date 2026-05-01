@@ -90,12 +90,23 @@
   }
 
   .nav-logo {
-    font-family: var(--serif);
-    font-size: 22px;
-    font-weight: 600;
-    letter-spacing: 4px;
-    color: var(--text);
+    width: 182px;
+    height: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 6px;
     text-decoration: none;
+  }
+
+  .nav-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1.35);
+    display: block;
   }
 
   .nav-links {
@@ -1243,6 +1254,7 @@
 
   @media (max-width: 768px) {
     nav { padding: 0 24px; }
+    .nav-logo { width: 148px; height: 42px; }
     .nav-links { display: none; }
 
     section { padding: 80px 24px; }
@@ -1367,7 +1379,9 @@
 </div>
 
 <nav id="navbar">
-  <a href="#" class="nav-logo">BELFORT</a>
+  <a href="#" class="nav-logo" aria-label="Belfort ana sayfa">
+    <img src="file:///C:/Users/mrbbn/Desktop/LOGO.jpeg" alt="Belfort" class="nav-logo-img">
+  </a>
   <ul class="nav-links">
     <li><a href="#hizmet">Hizmetler</a></li>
     <li><a href="#surec">Süreç</a></li>
@@ -1729,6 +1743,454 @@
   }
 
   draw();
+
+  const serviceDetails = {
+    analysis: {
+      tag: 'Stratejik Analiz',
+      title: 'Piyasa Analizi',
+      lead: 'Piyasa analizi hizmetimiz, yatırım kararlarınızı yalnızca fiyat hareketlerine değil; trend yapısı, hacim davranışı, makro gelişmeler ve risk senaryolarına dayandırmanız için tasarlanır.',
+      highlights: [
+        ['Teknik Okuma', 'Trend, destek-direnç ve momentum bölgeleri'],
+        ['Temel Perspektif', 'Haber akışı, piyasa duyarlılığı ve makro görünüm'],
+        ['Risk Senaryosu', 'Olası kırılım, düzeltme ve hedef bölgeleri']
+      ],
+      paragraphs: [
+        'Her analizde piyasanın genel yönünü, güçlü ve zayıf bölgelerini, kritik fiyat seviyelerini ve yatırımcı psikolojisini birlikte değerlendiriyoruz. Böylece yalnızca “ne alınır” sorusuna değil, “neden, ne zaman ve hangi riskle işlem yapılır” sorusuna da cevap veriyoruz.',
+        'Günlük, haftalık ve dönemsel analizlerle yatırımcının piyasayı daha net okumasını hedefliyoruz. Amaç, ani fiyat hareketlerinde panik kararlar almak yerine, önceden belirlenmiş senaryolarla disiplinli hareket etmektir.',
+        'Bu hizmet özellikle piyasayı takip etmek isteyen fakat verileri yorumlamakta zaman veya deneyim eksikliği yaşayan yatırımcılar için güçlü bir karar destek mekanizması sağlar.'
+      ]
+    },
+    signals: {
+      tag: 'Operasyonel Fırsatlar',
+      title: 'Trade Sinyalleri',
+      lead: 'Trade sinyalleri hizmetimiz, net giriş bölgesi, hedef fiyat, stop seviyesi ve risk/ödül dengesi belirlenmiş işlem fikirleri sunarak daha disiplinli pozisyon yönetimi sağlar.',
+      highlights: [
+        ['Net Seviye', 'Giriş, hedef ve stop bölgeleri açıkça belirtilir'],
+        ['Risk Yönetimi', 'Pozisyon büyüklüğü ve zarar limiti kontrol edilir'],
+        ['Hızlı Bildirim', 'Piyasa fırsatları zamanında paylaşılır']
+      ],
+      paragraphs: [
+        'Sinyaller yalnızca fiyat yükseliyor ya da düşüyor mantığıyla üretilmez. Önce piyasa yapısı, hacim, trend yönü, kırılım ihtimali ve olası likidite bölgeleri değerlendirilir. Ardından işlem fikri, uygulanabilir ve ölçülebilir hale getirilir.',
+        'Her sinyalde en önemli unsur risk yönetimidir. Bu nedenle hedef kadar stop seviyesi de stratejinin ayrılmaz bir parçasıdır. Böylece yatırımcı, işlem açmadan önce ne kadar risk aldığını ve hangi senaryoda pozisyondan çıkacağını bilir.',
+        'Bu yapı, özellikle piyasa içinde fırsat kaçırmak istemeyen ancak rastgele işlem açmak yerine planlı ilerlemek isteyen yatırımcılar için uygundur.'
+      ]
+    },
+    consulting: {
+      tag: 'Kişisel Strateji',
+      title: 'Birebir Danışmanlık',
+      lead: 'Birebir danışmanlık hizmetimiz, yatırımcının hedeflerine, risk toleransına ve sermaye yapısına göre kişiselleştirilmiş finansal yol haritası oluşturmayı amaçlar.',
+      highlights: [
+        ['Kişisel Plan', 'Hedef, sermaye ve risk profiline özel strateji'],
+        ['Portföy Takibi', 'Pozisyon dağılımı ve performans değerlendirmesi'],
+        ['Disiplin', 'Duygusal kararları azaltan sistemli yaklaşım']
+      ],
+      paragraphs: [
+        'Her yatırımcının hedefi, beklentisi ve risk algısı farklıdır. Bu nedenle standart öneriler yerine kişiye özel bir yaklaşım kullanıyoruz. İlk aşamada yatırım profili, zaman ufku, sermaye yapısı ve beklentiler detaylı şekilde değerlendirilir.',
+        'Danışmanlık sürecinde yalnızca işlem fikirleri değil, portföy dengesi, pozisyon boyutu, kâr alma stratejisi ve zarar sınırlama disiplini de ele alınır. Böylece yatırım süreci daha kontrollü ve sürdürülebilir hale gelir.',
+        'Bu hizmet, finansal piyasalarda daha bilinçli hareket etmek, kendi stratejisini oluşturmak ve profesyonel bir bakış açısıyla ilerlemek isteyen yatırımcılar için en kapsamlı çözümdür.'
+      ]
+    }
+  };
+
+  const serviceModal = document.getElementById('serviceModal');
+  const serviceTag = document.getElementById('serviceTag');
+  const serviceTitle = document.getElementById('serviceTitle');
+  const serviceLead = document.getElementById('serviceLead');
+  const serviceHighlights = document.getElementById('serviceHighlights');
+  const serviceBody = document.getElementById('serviceBody');
+
+  function openServiceDetail(serviceKey) {
+    const detail = serviceDetails[serviceKey];
+    if (!detail) return;
+
+    serviceTag.textContent = detail.tag;
+    serviceTitle.textContent = detail.title;
+    serviceLead.textContent = detail.lead;
+
+    serviceHighlights.innerHTML = detail.highlights.map(item => `
+      <div class="service-detail-item">
+        <span>${item[0]}</span>
+        <strong>${item[1]}</strong>
+      </div>
+    `).join('');
+
+    serviceBody.innerHTML = detail.paragraphs.map(text => `<p>${text}</p>`).join('');
+
+    serviceModal.classList.add('open');
+    serviceModal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open');
+  }
+
+  function closeServiceDetail() {
+    serviceModal.classList.remove('open');
+    serviceModal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
+  }
+
+  document.querySelectorAll('.service-detail-trigger').forEach(button => {
+    button.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openServiceDetail(button.dataset.service);
+    });
+  });
+
+  document.querySelectorAll('[data-close-service]').forEach(el => {
+    el.addEventListener('click', closeServiceDetail);
+  });
+
+  const cryptoPairs = [
+    { symbol: 'BTCUSDT', label: 'BTC' },
+    { symbol: 'ETHUSDT', label: 'ETH' },
+    { symbol: 'BNBUSDT', label: 'BNB' },
+    { symbol: 'SOLUSDT', label: 'SOL' },
+    { symbol: 'XRPUSDT', label: 'XRP' },
+    { symbol: 'DOGEUSDT', label: 'DOGE' },
+    { symbol: 'ADAUSDT', label: 'ADA' },
+    { symbol: 'AVAXUSDT', label: 'AVAX' }
+  ];
+
+  const cryptoGrid = document.getElementById('cryptoGrid');
+
+  function formatPrice(value) {
+    const number = Number(value);
+    if (number >= 1000) return number.toLocaleString('en-US', { maximumFractionDigits: 0 });
+    if (number >= 1) return number.toLocaleString('en-US', { maximumFractionDigits: 2 });
+    return number.toLocaleString('en-US', { maximumFractionDigits: 5 });
+  }
+
+  function formatVolume(value) {
+    const number = Number(value);
+    if (number >= 1000000000) return `${(number / 1000000000).toFixed(2)}B`;
+    if (number >= 1000000) return `${(number / 1000000).toFixed(2)}M`;
+    if (number >= 1000) return `${(number / 1000).toFixed(2)}K`;
+    return number.toFixed(2);
+  }
+
+  function renderCryptoCards() {
+    cryptoGrid.innerHTML = cryptoPairs.map(pair => `
+      <div class="crypto-card" data-symbol="${pair.symbol}" data-label="${pair.label}" role="button" tabindex="0">
+        <div class="crypto-top">
+          <span class="crypto-symbol">${pair.label}/USDT</span>
+          <span class="crypto-live">CANLI</span>
+        </div>
+        <div class="crypto-price">$--</div>
+        <div class="crypto-change">24s: --</div>
+        <div class="crypto-meta">Detaylı grafiği aç</div>
+      </div>
+    `).join('');
+  }
+
+  function updateCryptoCard(data) {
+    const card = document.querySelector(`[data-symbol="${data.s}"]`);
+    if (!card) return;
+
+    const price = card.querySelector('.crypto-price');
+    const change = card.querySelector('.crypto-change');
+    const changeValue = Number(data.P);
+
+    price.textContent = `$${formatPrice(data.c)}`;
+    change.textContent = `24s: ${changeValue >= 0 ? '+' : ''}${changeValue.toFixed(2)}%`;
+    change.classList.toggle('up', changeValue >= 0);
+    change.classList.toggle('down', changeValue < 0);
+  }
+
+  function startCryptoTicker() {
+    renderCryptoCards();
+
+    const streams = cryptoPairs.map(pair => `${pair.symbol.toLowerCase()}@ticker`).join('/');
+    const socket = new WebSocket(`wss://stream.binance.com:9443/stream?streams=${streams}`);
+
+    socket.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      updateCryptoCard(message.data);
+    };
+
+    socket.onerror = () => {
+      cryptoGrid.innerHTML = '<div class="crypto-loading">Canlı veri bağlantısı şu anda kurulamadı.</div>';
+    };
+  }
+
+  let chartCandles = [];
+  let activeKlineSocket = null;
+  let activeSymbol = 'BTCUSDT';
+  let activeLabel = 'BTC';
+  let activeInterval = '1h';
+
+  const chartModal = document.getElementById('chartModal');
+  const coinChart = document.getElementById('coinChart');
+  const coinCtx = coinChart.getContext('2d');
+  const chartTitle = document.getElementById('chartTitle');
+  const chartPrice = document.getElementById('chartPrice');
+  const chartChange = document.getElementById('chartChange');
+  const chartNote = document.getElementById('chartNote');
+  const statOpen = document.getElementById('statOpen');
+  const statHigh = document.getElementById('statHigh');
+  const statLow = document.getElementById('statLow');
+  const statVolume = document.getElementById('statVolume');
+
+  function intervalLabel(interval) {
+    if (interval === '15m') return '15 dakikalık';
+    if (interval === '1h') return '1 saatlik';
+    if (interval === '4h') return '4 saatlik';
+    return '1 günlük';
+  }
+
+  function updateChartStats(candles) {
+    if (!candles.length) return;
+
+    const first = candles[0];
+    const last = candles[candles.length - 1];
+    const high = Math.max(...candles.map(c => c.high));
+    const low = Math.min(...candles.map(c => c.low));
+    const volume = candles.reduce((sum, c) => sum + c.volume, 0);
+    const change = ((last.close - first.open) / first.open) * 100;
+
+    chartPrice.textContent = `$${formatPrice(last.close)}`;
+    chartChange.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
+    chartChange.classList.toggle('up', change >= 0);
+    chartChange.classList.toggle('down', change < 0);
+
+    statOpen.textContent = `$${formatPrice(first.open)}`;
+    statHigh.textContent = `$${formatPrice(high)}`;
+    statLow.textContent = `$${formatPrice(low)}`;
+    statVolume.textContent = formatVolume(volume);
+  }
+
+  function drawCandlestickChart(candles) {
+    if (!candles.length) return;
+
+    const rect = coinChart.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    coinChart.width = rect.width * dpr;
+    coinChart.height = rect.height * dpr;
+    coinCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    const width = rect.width;
+    const height = rect.height;
+    const padLeft = 54;
+    const padRight = 76;
+    const padTop = 26;
+    const padBottom = 78;
+    const chartWidth = width - padLeft - padRight;
+    const priceHeight = height - padTop - padBottom;
+    const volumeTop = height - 54;
+    const volumeHeight = 34;
+
+    const highs = candles.map(c => c.high);
+    const lows = candles.map(c => c.low);
+    let maxPrice = Math.max(...highs);
+    let minPrice = Math.min(...lows);
+    const pricePadding = (maxPrice - minPrice) * 0.08 || maxPrice * 0.01;
+    maxPrice += pricePadding;
+    minPrice -= pricePadding;
+
+    const maxVolume = Math.max(...candles.map(c => c.volume)) || 1;
+    const yPrice = (price) => padTop + ((maxPrice - price) / (maxPrice - minPrice)) * priceHeight;
+    const xCandle = (i) => padLeft + (i + 0.5) * (chartWidth / candles.length);
+
+    coinCtx.clearRect(0, 0, width, height);
+    coinCtx.strokeStyle = 'rgba(255,255,255,0.06)';
+    coinCtx.lineWidth = 1;
+    coinCtx.fillStyle = 'rgba(255,255,255,0.32)';
+    coinCtx.font = '11px DM Sans, sans-serif';
+
+    for (let i = 0; i <= 5; i++) {
+      const y = padTop + (priceHeight / 5) * i;
+      const price = maxPrice - ((maxPrice - minPrice) / 5) * i;
+      coinCtx.beginPath();
+      coinCtx.moveTo(padLeft, y);
+      coinCtx.lineTo(width - padRight, y);
+      coinCtx.stroke();
+      coinCtx.fillText(`$${formatPrice(price)}`, width - padRight + 10, y + 4);
+    }
+
+    for (let i = 0; i <= 5; i++) {
+      const x = padLeft + (chartWidth / 5) * i;
+      coinCtx.beginPath();
+      coinCtx.moveTo(x, padTop);
+      coinCtx.lineTo(x, height - 20);
+      coinCtx.stroke();
+    }
+
+    const candleGap = chartWidth / candles.length;
+    const candleWidth = Math.max(4, Math.min(12, candleGap * 0.62));
+
+    candles.forEach((candle, i) => {
+      const x = xCandle(i);
+      const openY = yPrice(candle.open);
+      const closeY = yPrice(candle.close);
+      const highY = yPrice(candle.high);
+      const lowY = yPrice(candle.low);
+      const isUp = candle.close >= candle.open;
+      const color = isUp ? '#22c55e' : '#ef4444';
+      const bodyTop = Math.min(openY, closeY);
+      const bodyHeight = Math.max(2, Math.abs(closeY - openY));
+
+      coinCtx.strokeStyle = color;
+      coinCtx.lineWidth = 1.2;
+      coinCtx.beginPath();
+      coinCtx.moveTo(x, highY);
+      coinCtx.lineTo(x, lowY);
+      coinCtx.stroke();
+
+      coinCtx.fillStyle = color;
+      coinCtx.fillRect(x - candleWidth / 2, bodyTop, candleWidth, bodyHeight);
+
+      const volumeBarHeight = (candle.volume / maxVolume) * volumeHeight;
+      coinCtx.fillStyle = isUp ? 'rgba(34,197,94,0.28)' : 'rgba(239,68,68,0.24)';
+      coinCtx.fillRect(x - candleWidth / 2, volumeTop + volumeHeight - volumeBarHeight, candleWidth, volumeBarHeight);
+    });
+
+    const last = candles[candles.length - 1];
+    const lastY = yPrice(last.close);
+
+    coinCtx.setLineDash([6, 6]);
+    coinCtx.strokeStyle = 'rgba(34,197,94,0.45)';
+    coinCtx.beginPath();
+    coinCtx.moveTo(padLeft, lastY);
+    coinCtx.lineTo(width - padRight, lastY);
+    coinCtx.stroke();
+    coinCtx.setLineDash([]);
+
+    coinCtx.fillStyle = '#22c55e';
+    coinCtx.fillRect(width - padRight + 8, lastY - 13, 62, 24);
+    coinCtx.fillStyle = '#000';
+    coinCtx.font = '11px DM Sans, sans-serif';
+    coinCtx.fillText(`$${formatPrice(last.close)}`, width - padRight + 14, lastY + 4);
+
+    coinCtx.fillStyle = 'rgba(255,255,255,0.38)';
+    coinCtx.font = '10px DM Sans, sans-serif';
+
+    for (let i = 0; i < candles.length; i += Math.ceil(candles.length / 5)) {
+      const date = new Date(candles[i].time);
+      const label = date.toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit' });
+      coinCtx.fillText(label, xCandle(i) - 18, height - 18);
+    }
+
+    coinCtx.fillStyle = 'rgba(255,255,255,0.28)';
+    coinCtx.fillText('Hacim', padLeft, volumeTop - 8);
+  }
+
+  async function loadCryptoChart(symbol, label, interval) {
+    chartTitle.textContent = `${label}/USDT`;
+    chartPrice.textContent = '$--';
+    chartChange.textContent = '--';
+    chartNote.textContent = 'Grafik yükleniyor...';
+    statOpen.textContent = '--';
+    statHigh.textContent = '--';
+    statLow.textContent = '--';
+    statVolume.textContent = '--';
+
+    if (activeKlineSocket) activeKlineSocket.close();
+
+    try {
+      const response = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=90`);
+      const data = await response.json();
+
+      chartCandles = data.map(item => ({
+        time: item[0],
+        open: Number(item[1]),
+        high: Number(item[2]),
+        low: Number(item[3]),
+        close: Number(item[4]),
+        volume: Number(item[5])
+      }));
+
+      chartNote.textContent = `Son 90 adet ${intervalLabel(interval)} Binance mum verisi`;
+      updateChartStats(chartCandles);
+      requestAnimationFrame(() => drawCandlestickChart(chartCandles));
+
+      activeKlineSocket = new WebSocket(`wss://stream.binance.com:9443/ws/${symbol.toLowerCase()}@kline_${interval}`);
+      activeKlineSocket.onmessage = (event) => {
+        const message = JSON.parse(event.data);
+        const k = message.k;
+        const candle = {
+          time: k.t,
+          open: Number(k.o),
+          high: Number(k.h),
+          low: Number(k.l),
+          close: Number(k.c),
+          volume: Number(k.v)
+        };
+
+        const last = chartCandles[chartCandles.length - 1];
+        if (last && last.time === candle.time) {
+          chartCandles[chartCandles.length - 1] = candle;
+        } else {
+          chartCandles.push(candle);
+          if (chartCandles.length > 90) chartCandles.shift();
+        }
+
+        updateChartStats(chartCandles);
+        drawCandlestickChart(chartCandles);
+      };
+    } catch (error) {
+      chartNote.textContent = 'Grafik verisi şu anda alınamadı.';
+    }
+  }
+
+  function openCryptoChart(symbol, label) {
+    activeSymbol = symbol;
+    activeLabel = label;
+    chartModal.classList.add('open');
+    chartModal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open');
+    requestAnimationFrame(() => {
+      loadCryptoChart(activeSymbol, activeLabel, activeInterval);
+    });
+  }
+
+  function closeCryptoChart() {
+    chartModal.classList.remove('open');
+    chartModal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
+
+    if (activeKlineSocket) {
+      activeKlineSocket.close();
+      activeKlineSocket = null;
+    }
+  }
+
+  cryptoGrid.addEventListener('click', (e) => {
+    const card = e.target.closest('.crypto-card');
+    if (!card) return;
+    openCryptoChart(card.dataset.symbol, card.dataset.label);
+  });
+
+  cryptoGrid.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return;
+    const card = e.target.closest('.crypto-card');
+    if (!card) return;
+    openCryptoChart(card.dataset.symbol, card.dataset.label);
+  });
+
+  document.querySelectorAll('[data-close-chart]').forEach(el => {
+    el.addEventListener('click', closeCryptoChart);
+  });
+
+  document.querySelectorAll('.chart-tab').forEach(button => {
+    button.addEventListener('click', () => {
+      document.querySelectorAll('.chart-tab').forEach(tab => tab.classList.remove('active'));
+      button.classList.add('active');
+      activeInterval = button.dataset.interval;
+      loadCryptoChart(activeSymbol, activeLabel, activeInterval);
+    });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (chartModal.classList.contains('open')) closeCryptoChart();
+      if (serviceModal.classList.contains('open')) closeServiceDetail();
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    if (chartModal.classList.contains('open') && chartCandles.length) {
+      drawCandlestickChart(chartCandles);
+    }
+  });
+
+  startCryptoTicker();
 </script>
 </body>
 </html>
