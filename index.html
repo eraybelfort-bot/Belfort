@@ -103,9 +103,10 @@
   .nav-logo-img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: center;
+    object-fit: contain;
+    object-position: left center;
     display: block;
+    mix-blend-mode: screen; /* Siyah arka planı şeffaf yapar */
   }
 
   .nav-logo.logo-missing::after {
@@ -1352,7 +1353,7 @@
 
 <nav id="navbar">
   <a href="#" class="nav-logo" aria-label="Belfort ana sayfa">
-    <img src="LOGO.jpeg" alt="" class="nav-logo-img" onerror="this.style.display='none'; this.parentElement.classList.add('logo-missing');">
+    <img src="logo.png" alt="Belfort Logo" class="nav-logo-img" onerror="this.style.display='none'; this.parentElement.classList.add('logo-missing');">
   </a>
   <ul class="nav-links">
     <li><a href="#hizmet">Hizmetler</a></li>
@@ -1575,7 +1576,9 @@
 <footer id="iletisim">
   <div class="footer-grid">
     <div class="footer-brand reveal">
-      <div class="logo-text">BELFORT</div>
+      <a href="#" class="nav-logo" style="margin-bottom: 16px;">
+        <img src="logo.png" alt="Belfort Logo" class="nav-logo-img">
+      </a>
       <p>Finansal piyasalarda profesyonel danışmanlık. Disiplinli analiz ve kişisel strateji ile yatırımcıların yanındayız.</p>
     </div>
     <div class="footer-col reveal reveal-delay-1">
